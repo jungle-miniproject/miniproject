@@ -100,22 +100,20 @@ def msgCheck():
     
     return jsonify({'status':'success'})
 
-
-
 @app.route('/')
 def home():
     return render_template('login.html')
 
 @app.route('/login')
-def login():
+def login_page():
     return render_template('login.html')
 
 @app.route('/signup')
-def signup():
+def signup_page():
     return render_template('signup.html')
 
 @app.route('/homepage')
-def homepage():
+def home_page():
     return render_template('home.html')
 
 
