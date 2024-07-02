@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/login/main.css') }}" />
+    </head>
+    <body>
+        <div class="wrapper">
+            <img src="{{ url_for('static', filename='img/mascot.png') }}" alt="Mascot" class="maskote" />
+            <div class="form-container">
+                <p class="form-title">Welcome</p>
+                <form>
+                    <label for="username">
+                        <p class="btnTile">ID</p>
+                        <input type="text" id="username" name="username" />
+                    </label>
+                    <label for="username">
+                        <p class="btnTile">PASSWORD</p>
+                        <input type="text" id="username" name="username" />
+                    </label>
+                    <button>Login</button>
+                    <button>Sign up</button>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>
