@@ -41,7 +41,7 @@ p {
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    height: 60%;
+    height: 80%;
 }
 
 .form-container form label {
@@ -80,7 +80,13 @@ input {
     height: 410px;
 }
 
-.btnTitle {
+.btnTile {
+    width: 100%;
+    text-align: left;
+}
+
+#passwordError {
+    font-size: 15px;
     width: 100%;
     text-align: left;
 }

@@ -13,17 +13,18 @@
                 <p class="form-title">Welcome</p>
                 <form>
                     <label for="username">
-                        <p class="btnTile">ID</p>
+                        <p class="btnTitle">ID</p>
                         <input type="text" id="username" name="username" />
                     </label>
-                    <label for="username">
-                        <p class="btnTile">PASSWORD</p>
-                        <input type="text" id="username" name="username" />
+                    <label for="password">
+                        <p class="btnTitle">PASSWORD</p>
+                        <input type="password" id="password" name="password" />
                     </label>
-                    <button>Login</button>
-                    <button>Sign up</button>
+                    <button type="button" id="loginBtn">Login</button>
+                    <button type="button" id="signup">Sign up</button>
                 </form>
             </div>
         </div>
+        <script src="{{ url_for('static', filename='js/login/index.js') }}"></script>
     </body>
 </html>

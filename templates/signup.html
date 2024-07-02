@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/signup/main.css') }}" />
+        <style>
+            .error {
+                color: red;
+                font-size: 0.8em;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="wrapper">
+            <img src="{{ url_for('static', filename='img/mascot.png') }}" alt="Mascot" class="maskote" />
+            <div class="form-container">
+                <p class="form-title">Welcome</p>
+                <form id="signupForm" onsubmit="return validateForm()">
+                    <label for="userId">
+                        <p class="btnTile">ID</p>
+                        <input type="text" id="userId" name="userId" required />
+                    </label>
+                    <label for="userPwd">
+                        <p class="btnTile">PASSWORD</p>
+                        <input type="password" id="userPwd" name="userPwd" required />
+                    </label>
+                    <label for="confirmPassword">
+                        <p class="btnTile">CONFIRM PASSWORD</p>
+                        <input type="password" id="confirmPassword" name="confirmPassword" required />
+                    </label>
+                    <p id="passwordError" class="error"></p>
+                    <label for="userName">
+                        <p class="btnTile">Name</p>
+                        <input type="name" id="userName" name="userName" required />
+                    </label>
+                    <button type="button" id="signupBtn">Sign up</button>
+                </form>
+            </div>
+        </div>
+        <script src="{{ url_for('static', filename='js/signup/index.js') }}"></script>
+    </body>
+</html>
