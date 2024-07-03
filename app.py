@@ -161,13 +161,15 @@ def login_page():
 def signup_page():
     return render_template('signup.html')
 
+
 @app.route('/homepage')
 def home_page():
-    return render_template('home.html')
+    name_list = ['건우','태민','형욱']
+    return render_template('home.html',title='또치에게 상대방 이름을 말해주세요',name_list=name_list)
 
 @app.route('/question')
 def question():
-    return render_template('question.html')
+    return render_template('question.html',title="또치에게 상대방에게 전달하고 싶은 메세지를 말해주세요")
 @app.route('/test')
 
 
@@ -178,6 +180,10 @@ def inbox():
 @app.route('/chat')
 def chatpage():
     return render_template('chat.html')
+
+@app.route('/adminhome')
+def adminhome():
+    return render_template('adminhome.html')
 
 @app.route('/test')
 def testFunc():
