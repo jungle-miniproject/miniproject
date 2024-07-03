@@ -9,7 +9,7 @@ from flask_socketio import SocketIO
 from flask_socketio import SocketIO, send
 
 #pymongo 변수 선언
-client = MongoClient('3.35.140.49',27017)
+client = MongoClient('mongodb://test:test@3.35.140.49',27017)
 db = client.w00_jungdaejun
 
 app = Flask(__name__)
