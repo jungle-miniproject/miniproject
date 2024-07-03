@@ -3,12 +3,15 @@ from flask import Flask, render_template, jsonify, request
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
 from datetime import datetime, timedelta
 from pymongo import MongoClient
+from flask_socketio import SocketIO
+from flask_socketio import SocketIO, send
 
 #pymongo 변수 선언
 client = MongoClient('localhost',27017)
 db = client.w00_jungdaejun
 
 app = Flask(__name__)
+socket_io = SocketIO(app)
 
 admin_id = "hjo"
 admin_pw = "12345"
@@ -207,16 +210,6 @@ def signup_page():
 
 @app.route('/homepage')
 def home_page():
-    name_list = [
-        {
-            'name': '건우',
-            'id': 1
-        },
-        {
-            'name': '형욱',
-            'id': 2
-        }
-    ]
     return render_template('home.html', title='또치에게 상대방 이름을 말해주세요', name_list=name_list)
 
 @app.route('/question')
@@ -232,36 +225,87 @@ def test():
 def inbox():
     messagelist = [
         {
-            'id': 1,
-            'content': '안녕하세요, 첫 번째 편지입니다.',
-            'userRead': False,
-            'admin': False,
+            "m_id": 1,
+            "receiver_id": 2,
+            "message": "hihi",
+            "stat_appr": 'False',
+            "stat_read": False,
+            "date": "2024-07-02"
         },
         {
-            'id': 2,
-            'content': '두 번째 편지입니다. 새로운 소식이 있습니다.',
-            'userRead': True,
-            'admin': False,
+            "m_id": 2,
+            "receiver_id": 1,
+            "message": "hihi",
+            "stat_appr": 'True',
+            "stat_read": False,
+            "date": "2024-07-02"
         },
         {
-            'id': 3,
-            'content': '관리자가 보낸 중요한 알림입니다.',
-            'userRead': False,
-            'admin': True,
+            "m_id": 3,
+            "receiver_id": 1,
+            "message": "hihi",
+            "stat_appr": "ignore",
+            "stat_read": False,
+            "date": "2024-07-02"
         },
         {
-            'id': 4,
-            'content': '네 번째 편지입니다. 오늘 날씨가 참 좋네요.',
-            'userRead': True,
-            'admin': False,
+            "m_id": 4,
+            "receiver_id": 3,
+            "message": "hello",
+            "stat_appr": 'False',
+            "stat_read": True,
+            "date": "2024-07-03"
         },
         {
-            'id': 5,
-            'content': '다섯 번째 편지입니다. 주말 잘 보내세요.',
-            'userRead': False,
-            'admin': False,
+            "m_id": 5,
+            "receiver_id": 4,
+            "message": "test message",
+            "stat_appr": True,
+            "stat_read": False,
+            "date": "2024-07-03"
         },
+        {
+            "m_id": 6,
+            "receiver_id": 2,
+            "message": "another test",
+            "stat_appr": 'False',
+            "stat_read": True,
+            "date": "2024-07-04"
+        },
+        {
+            "m_id": 7,
+            "receiver_id": 5,
+            "message": "sample text",
+            "stat_appr": 'True',
+            "stat_read": 'False',
+            "date": "2024-07-04"
+        },
+        {
+            "m_id": 8,
+            "receiver_id": 3,
+            "message": "more data",
+            "stat_appr": "ignore",
+            "stat_read": 'False',
+            "date": "2024-07-05"
+        },
+        {
+            "_id": 9,
+            "receiver_id": 4,
+            "message": "final test",
+            "stat_appr": 'True',
+            "stat_read": True,
+            "date": "2024-07-05"
+        },
+        {
+            "_id": 10,
+            "receiver_id": 5,
+            "message": "last message",
+            "stat_appr": 'False',
+            "stat_read": True,
+            "date": "2024-07-06"
+        }
     ]
+
     return render_template('inbox.html', messagelist=messagelist)
 
 
@@ -273,35 +317,85 @@ def chatpage():
 def adminhome():
     userMessageList = [
         {
-            'id': 1,
-            'content': '안녕하세요, 첫 번째 편지입니다.',
-            'userRead': False,
-            'admin': False,
+            "m_id": 1,
+            "receiver_id": 2,
+            "message": "hihi",
+            "stat_appr": False,
+            "stat_read": False,
+            "date": "2024-07-02"
         },
         {
-            'id': 2,
-            'content': '두 번째 편지입니다. 새로운 소식이 있습니다.',
-            'userRead': True,
-            'admin': False,
+            "m_id": 2,
+            "receiver_id": 1,
+            "message": "hihi",
+            "stat_appr": True,
+            "stat_read": False,
+            "date": "2024-07-02"
         },
         {
-            'id': 3,
-            'content': '관리자가 보낸 중요한 알림입니다.',
-            'userRead': False,
-            'admin': True,
+            "m_id": 3,
+            "receiver_id": 1,
+            "message": "hihi",
+            "stat_appr": "ignore",
+            "stat_read": False,
+            "date": "2024-07-02"
         },
         {
-            'id': 4,
-            'content': '네 번째 편지입니다. 오늘 날씨가 참 좋네요.',
-            'userRead': True,
-            'admin': False,
+            "m_id": 4,
+            "receiver_id": 3,
+            "message": "hello",
+            "stat_appr": False,
+            "stat_read": True,
+            "date": "2024-07-03"
         },
         {
-            'id': 5,
-            'content': '다섯 번째 편지입니다. 주말 잘 보내세요.',
-            'userRead': False,
-            'admin': False,
+            "m_id": 5,
+            "receiver_id": 4,
+            "message": "test message",
+            "stat_appr": True,
+            "stat_read": False,
+            "date": "2024-07-03"
         },
+        {
+            "m_id": 6,
+            "receiver_id": 2,
+            "message": "another test",
+            "stat_appr": False,
+            "stat_read": True,
+            "date": "2024-07-04"
+        },
+        {
+            "m_id": 7,
+            "receiver_id": 5,
+            "message": "sample text",
+            "stat_appr": True,
+            "stat_read": False,
+            "date": "2024-07-04"
+        },
+        {
+            "m_id": 8,
+            "receiver_id": 3,
+            "message": "more data",
+            "stat_appr": "ignore",
+            "stat_read": False,
+            "date": "2024-07-05"
+        },
+        {
+            "m_id": 9,
+            "receiver_id": 4,
+            "message": "final test",
+            "stat_appr": True,
+            "stat_read": True,
+            "date": "2024-07-05"
+        },
+        {
+            "_id": 10,
+            "receiver_id": 5,
+            "message": "last message",
+            "stat_appr": False,
+            "stat_read": True,
+            "date": "2024-07-06"
+        }
     ]
     return render_template('adminhome.html',userMessageList=userMessageList)
 
@@ -318,6 +412,21 @@ def testFunc():
     print(all_users)
     return jsonify({'result':'success'})
 
+@app.route('/chat')
+def chatting():    
+    return render_template('chat.html')
+
+@socket_io.on("message")
+def handle_message(message):    
+    print("message: " + message)    
+    to_client = {}
+    if message == 'new_connect':        
+        to_client['message'] = "새로운 유저가 난입하였다!!"        
+        to_client['type'] = 'connect'    
+    else:        
+        to_client['message'] = message        
+        to_client['type'] = 'normal'    
+    send(to_client, broadcast=True)
 
 if __name__ == '__main__':  
-   app.run('0.0.0.0',port=5001,debug=True)
+    socket_io.run(app, host='localhost', port=5001, debug=True)

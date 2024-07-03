@@ -1,11 +1,49 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    chat
-</body>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Chat Room</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.2/socket.io.min.js"></script>
+    </head>
+    <body>
+        <ul id="messages"></ul>
+        <input type="text" id="myMessage" /> <button id="sendbutton">Send</button>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const socket = io('http://localhost:5001');
+                const sendBtn = document.getElementById('sendbutton');
+                const msgInput = document.getElementById('myMessage');
+                const messageList = document.getElementById('messages');
+
+                socket.on('connect', function () {
+                    console.log('Connected to server');
+                });
+
+                socket.on('message', function (msg) {
+                    console.log(msg.message)
+                    const li = document.createElement('li');
+                    li.textContent = msg;
+                    messageList.appendChild(li);
+                    console.log('Received Message: ' + msg);
+                });
+
+                function sendMessage() {
+                    const message = msgInput.value;
+                    if (message !== '') {
+                        socket.send(message);
+                        msgInput.value = '';
+                    }
+                }
+
+                sendBtn.addEventListener('click', sendMessage);
+
+                msgInput.addEventListener('keypress', function (e) {
+                    if (e.key === 'Enter') {
+                        sendMessage();
+                    }
+                });
+            });
+        </script>
+    </body>
 </html>

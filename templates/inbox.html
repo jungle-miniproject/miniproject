@@ -115,6 +115,7 @@
                     const letterContainer = $(this).data('letter-id');
                     $(`#letterOutput${letterContainer}`).toggle();
                     const token = localStorage.getItem('token');
+                    console.log(letterContainer)
                     postUserReadMessageId(letterContainer);
                 });
 
@@ -122,7 +123,7 @@
                     $.ajax({
                         type: 'POST',
                         url: '/receive/msgRead',
-                        data: { msg_id: id },
+                        data: { m_id: id },
                         success: function (response) {
                             console.log(response);
                             window.location.reload();
@@ -142,19 +143,19 @@
             <div class="grid-container" id="message-box">
                 {% for message in messagelist %}
                 <div class="grid-item">
-                    {% if not message['userRead'] %}
+                    {% if not message['stat_read'] %}
                     <img
                         src="{{ url_for('static', filename='img/closeMessageImg.png') }}"
                         alt="Letter Image"
                         class="image"
-                        data-letter-id="{{ message['id'] }}"
+                        data-letter-id="{{ message['m_id'] }}"
                     />
-                    <div class="letter-container letter-container-unread" id="letterOutput{{ message['id'] }}">
-                        <div class="letter">{{ message['content'] }}</div>
+                    <div class="letter-container letter-container-unread" id="letterOutput{{ message['m_id'] }}">
+                        <div class="letter">{{ message['message'] }}</div>
                     </div>
                     {% else %}
-                    <div class="letter-container letter-container-read" id="letterOutput{{ message['id'] }}">
-                        <div class="letter">{{ message['content'] }}</div>
+                    <div class="letter-container letter-container-read" id="letterOutput{{ message['m_id'] }}">
+                        <div class="letter">{{ message['message'] }}</div>
                     </div>
                     {% endif %}
                 </div>

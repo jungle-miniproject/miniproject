@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
     <head>
         <meta charset="UTF-8" />
@@ -60,51 +60,51 @@
                 gap: 20px; /* 이미지 사이의 간격 설정 */
             }
 
-      .iconChat {
-        position: relative;
-        margin-top: 6px;
-      }
+            .iconChat {
+                position: relative;
+                margin-top: 6px;
+            }
 
-      .iconChat img {
-        width: 50px; /* 이미지 크기 조정 */
-        cursor: pointer;
-      }
-      .notification {
-        position: relative;
-      }
-      .notification img {
-        width: 50px; /* 이미지 크기 조정 */
-        cursor: pointer;
-      }
-      .notification .badge {
-        position: absolute;
-        top: 0;
-        right: 0;
-        background-color: red;
-        color: white;
-        border-radius: 50%;
-        width: 20px;
-        height: 20px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 12px;
-      }
+            .iconChat img {
+                width: 50px; /* 이미지 크기 조정 */
+                cursor: pointer;
+            }
+            .notification {
+                position: relative;
+            }
+            .notification img {
+                width: 50px; /* 이미지 크기 조정 */
+                cursor: pointer;
+            }
+            .notification .badge {
+                position: absolute;
+                top: 0;
+                right: 0;
+                background-color: red;
+                color: white;
+                border-radius: 50%;
+                width: 20px;
+                height: 20px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 12px;
+            }
 
-      .input-box {
-        width: 423px;
-        min-height: 80px;
-        background: #ffffff;
-        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-        border-radius: 20px;
-      }
+            .input-box {
+                width: 423px;
+                min-height: 80px;
+                background: #ffffff;
+                box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+                border-radius: 20px;
+            }
 
-      #submitButton {
-        width: 228px;
-        height: 62px;
-        border: 0;
-        font-size: 20px;
-        font-weight: 600;
+            #submitButton {
+                width: 228px;
+                height: 62px;
+                border: 0;
+                font-size: 20px;
+                font-weight: 600;
 
                 background: #ffffff;
                 box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -151,7 +151,7 @@
                         headers: {
                             'Content-Type': 'application/json',
                         },
-                        body: JSON.stringify({ u_id: userId, msg: userMessage }),
+                        body: JSON.stringify({ id: userId, msg: userMessage }),
                     });
                 } catch (e) {
                     alert(e);
@@ -182,10 +182,10 @@
                 });
             });
 
-      iconChat.addEventListener("click", (e) => {
-        e.preventDefault();
-        window.location.href = "/chat";
-      });
-    </script>
-  </body>
+            iconChat.addEventListener('click', (e) => {
+                e.preventDefault();
+                window.location.href = '/chat';
+            });
+        </script>
+    </body>
 </html>
