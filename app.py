@@ -239,9 +239,9 @@ def handle_message(message):
         to_client['type'] = 'connect'  
     else:        
         to_client['message'] = message        
-        to_client['type'] = 'normal'    
+        to_client['type'] = 'normal'
         print('socket_io',socket_io)  
-    send({'sender': request.sid, 'message': message}, broadcast=True)
+    send({'senderId': request.sid, 'message': message}, broadcast=True)
 
 if __name__ == '__main__':  
    app.run('0.0.0.0',port=5001,debug=True)
