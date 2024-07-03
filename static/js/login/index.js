@@ -27,7 +27,7 @@ const postLogin = async () => {
     let token = response["token"];
     console.log(token);
     console.log("response", response);
-    // window.location.href = "/homepage";
+    window.location.href = "/homepage";
   } else {
     alert("아이디 또는 비밀번호가 틀렸습니다.");
   }
