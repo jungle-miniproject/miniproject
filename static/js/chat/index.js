@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const socket = io('http://localhost:5001');
+    const socket = io('http://3.35.140.49');
     const sendBtn = document.getElementById('sendbutton');
     const msgInput = document.getElementById('myMessage');
     const messageList = document.getElementById('messages');
