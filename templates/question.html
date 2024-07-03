@@ -2,7 +2,7 @@
 <html lang="ko">
     <head>
         <meta charset="UTF-8" />
-        <title>1번 질문</title>
+        <title>2번 질문</title>
         <style>
             body {
                 font-family: Arial, sans-serif;
@@ -131,7 +131,7 @@
             <h1>{{title}}</h1>
             <img src="{{ url_for('static', filename='img/mascot.png') }}" alt="Mascot" class="maskote" />
             <input type="text" class="input-box" id="message-input" placeholder="전달하고 싶은 메세지를 입력하세요" />
-            <button id="submitButton">선택하기</button>
+            <button id="submitButton">보내기</button>
         </div>
         <script>
             const submitButton = document.getElementById('submitButton');
@@ -157,6 +157,7 @@
                     alert(e);
                 }
             };
+
             const messageIcon = document.querySelector('.notification');
             const iconChat = document.querySelector('.iconChat');
             messageIcon.addEventListener('click', (e) => {
@@ -176,9 +177,9 @@
                     },
                     error: function (e) {
                         alert('Error: ' + e.responseText);
+                        window.location.reload();
                     },
                 });
-                window.location.href = '/inbox';
             });
 
             iconChat.addEventListener('click', (e) => {
