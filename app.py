@@ -1,3 +1,4 @@
+from bson import ObjectId
 from flask import Flask, render_template, jsonify, request
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
 from datetime import datetime, timedelta
@@ -108,7 +109,7 @@ def recevedMsg():
     messages=objectIdDecoder(list(db.messages.find({'id':u_id})))
     print(messages)
    #질문테이블에서 본인 아이디의 받은 메시지를 select
-    return render_template('h')
+    return render_template('inbox.html')
 
 # objectId제거 함수
 def objectIdDecoder(list):
@@ -129,25 +130,49 @@ def adminMsg() :
 #메시지 읽음처리 api
 @app.route('/receive/msgRead', methods=["POST"])
 def msgRead():
-    msg_id = request.json('msg_id')
+    print(request.json)
+    msg_id = request.json['msg_id']
+
+    if msg_id is None:
+        return jsonify({"error": "msg_id and status are required"}), 400
+
+    try:
+        object_id = ObjectId(msg_id)
+    except Exception as e:
+        return jsonify({"error": "Invalid msg_id format"}), 400
     #해당 메시지의 상태값 수정
-    db.message.update_one({'_id':msg_id},{'$set':{'stat_read':True }})
+    db.messages.update_one({'_id':object_id},{'$set':{'stat_read':True }})
     return jsonify({'result':'success'})
 
 #메시지 승인/거절 api
 @app.route('/adminMsg/check', methods=['POST'])
 def msgCheck():
-   #  msg_id     = request.json['msg_id']
-   #  status     = request.json['status']
-    msg_id     = "6684b711db12e679fd9d8651"
-    status     = "ignore"
+    print(request.json)
+    msg_id     = request.json['msg_id']
+    status     = request.json['status']
+   #  msg_id     = "6684b711db12e679fd9d8651"
+   #  status     = "ignore"
+   #  msg_id=getObjectId(msg_id)
 
-    db.message.update_one({'_id':msg_id},{'$set':{'stat_appr':status }})
-    print(db.message.find_one({'_id':msg_id}))
+    if msg_id is None or status is None:
+        return jsonify({"error": "msg_id and status are required"}), 400
+
+    try:
+        object_id = ObjectId(msg_id)
+    except Exception as e:
+        return jsonify({"error": "Invalid msg_id format"}), 400
+
+    print('objectId:', object_id)
+
+   #  object_id=ObjectId(msg_id)
+   #  print('objectId:',object_id)
+   
+    db.messages.update_one({'_id':object_id},{'$set':{'stat_appr':status }})
+    print(db.messages.find_one({'_id':object_id}))
     #디비 연동 코드
     #디비에 해당 메시지 상태 업데이트
     
-    return jsonify({'status':'success'})
+    return jsonify({'result':'success'})
 
 @app.route('/')
 def home():
@@ -168,7 +193,10 @@ def home_page():
 @app.route('/question')
 def question():
     return render_template('question.html')
-@app.route('/test')
+
+@app.route('/testet')
+def test():
+    return render_template('test.html')
 
 
 @app.route('/inbox')

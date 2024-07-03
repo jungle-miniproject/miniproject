@@ -1,18 +1,47 @@
-<script>
-  function postArticle() {
-    $.ajax({
-      type: "POST",
-      url: "/memo",
-      data: {},
-      success: function (response) {
-        // 성공하면
-        if (response["result"] == "success") {
-          alert(response["msg"]);
-        }
-      },
-    });
-  }
-</script>
-<button type="button" class="btn btn-primary" onclick="postArticle()">
-  기사저장
-</button>
+<head>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script>
+    function ignoreMsg() {
+      $.ajax({
+        type: "POST",
+        url: "/adminMsg/check",
+        contentType: "application/json",
+        data: JSON.stringify({
+          msg_id: "6684b711db12e679fd9d8651",
+          status: "ignore",
+        }),
+        success: function (response) {
+          // 성공하면
+          if (response["result"] == "success") {
+            alert(response["result"]);
+          }
+        },
+      });
+    }
+
+    function readMsg() {
+      $.ajax({
+        type: "POST",
+        url: "/receive/msgRead",
+        contentType: "application/json",
+        data: JSON.stringify({
+          msg_id: "6684b711db12e679fd9d8651",
+        }),
+        success: function (response) {
+          // 성공하면
+          if (response["result"] == "success") {
+            alert(response["result"]);
+          }
+        },
+      });
+    }
+  </script>
+</head>
+<body>
+  <button type="button" class="btn btn-primary" onclick="ignoreMsg()">
+    관리자 거절
+  </button>
+  <button type="button" class="btn btn-primary" onclick="readMsg()">
+    사용자 읽음
+  </button>
+</body>
