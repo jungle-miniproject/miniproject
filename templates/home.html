@@ -1,179 +1,188 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ko">
-    <head>
-        <meta charset="UTF-8" />
-        <title>{{ title }}</title>
-        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    </head>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            position: relative;
-        }
-        .container {
-            text-align: center;
-        }
-        h1 {
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-        .main-image {
-            max-width: 40%;
-            height: auto;
-        }
-        #input-box {
-            margin: 20px 0;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            width: 300px;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            height: 50px; /* 높이 조정 */
-            line-height: 30px; /* 텍스트 중앙 정렬 */
-            font-size: 16px; /* 폰트 크기 조정 */
-        }
-        .button {
-            padding: 10px 20px;
-            background-color: #000;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            margin-top: 20px;
-        }
-        .button:hover {
-            background-color: #444;
-        }
-        .top-right {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            display: flex;
-            gap: 20px; /* 이미지 사이의 간격 설정 */
-        }
+  <head>
+    <meta charset="UTF-8" />
+    <title>{{ title }}</title>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  </head>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      position: relative;
+    }
+    .container {
+      text-align: center;
+    }
+    h1 {
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+    .main-image {
+      max-width: 40%;
+      height: auto;
+    }
+    #input-box {
+      margin: 20px 0;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      width: 300px;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      height: 50px; /* 높이 조정 */
+      line-height: 30px; /* 텍스트 중앙 정렬 */
+      font-size: 16px; /* 폰트 크기 조정 */
+    }
+    .button {
+      padding: 10px 20px;
+      background-color: #000;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      margin-top: 20px;
+    }
+    .button:hover {
+      background-color: #444;
+    }
+    .top-right {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      display: flex;
+      gap: 20px; /* 이미지 사이의 간격 설정 */
+    }
 
-        .iconChat {
-            position: relative;
-            margin-top: 6px;
-        }
+    .iconChat {
+      position: relative;
+      margin-top: 6px;
+    }
 
-        .iconChat img {
-            width: 50px; /* 이미지 크기 조정 */
-            cursor: pointer;
-        }
-        .notification {
-            position: relative;
-        }
-        .notification img {
-            width: 50px; /* 이미지 크기 조정 */
-            cursor: pointer;
-        }
-        .notification .badge {
-            position: absolute;
-            top: 0;
-            right: 0;
-            background-color: red;
-            color: white;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 12px;
-        }
+    .iconChat img {
+      width: 50px; /* 이미지 크기 조정 */
+      cursor: pointer;
+    }
+    .notification {
+      position: relative;
+    }
+    .notification img {
+      width: 50px; /* 이미지 크기 조정 */
+      cursor: pointer;
+    }
+    .notification .badge {
+      position: absolute;
+      top: 0;
+      right: 0;
+      background-color: red;
+      color: white;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 12px;
+    }
 
-        #input-box {
-            width: 423px;
-            min-height: 57px;
-            background: #ffffff;
-            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-            border-radius: 20px;
-        }
+    #input-box {
+      width: 423px;
+      min-height: 57px;
+      background: #ffffff;
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+      border-radius: 20px;
+    }
 
-        #submitButton {
-            width: 228px;
-            height: 62px;
-            border: 0;
-            font-size: 20px;
-            font-weight: 600;
+    #submitButton {
+      width: 228px;
+      height: 62px;
+      border: 0;
+      font-size: 20px;
+      font-weight: 600;
 
-            background: #ffffff;
-            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-            border-radius: 20px;
-        }
-        #outBtn {
-            width: 80px;
-            height: 40px;
-            background-color: salmon;
-            border: 0px;
-            color: white;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 700;
-        }
-    </style>
-    <body>
-        <div class="top-right">
-            <div class="notification">
-                <a>
-                    <img src="{{ url_for('static', filename='img/iconMessage.png') }}" alt="message" />
-                    <div class="badge">1</div>
-                </a>
-            </div>
-            <div class="iconChat">
-                <a>
-                    <img src="{{ url_for('static', filename='img/iconChat.png') }}" alt="chat" />
-                </a>
-            </div>
-            <button id="outBtn">LogOut</button>
-        </div>
-        <div class="container">
-            <h1>{{ title }}</h1>
-            <img src="{{ url_for('static', filename='img/mascot.png') }}" alt="Mascot" class="maskote" />
-            <select id="input-box">
-                {% for user in name_list %}
-                <option value="{{ user.id }}">{{ user.name }}</option>
-                {% endfor %}
-            </select>
-            <button id="submitButton">선택하기</button>
-        </div>
-        <script>
-            const submitButton = document.getElementById('submitButton');
-            const messageIcon = document.querySelector('.notification');
-            const iconChat = document.querySelector('.iconChat');
-            const idInput = document.getElementById('input-box');
+      background: #ffffff;
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+      border-radius: 20px;
+    }
+    #outBtn {
+      width: 80px;
+      height: 40px;
+      background-color: salmon;
+      border: 0px;
+      color: white;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 700;
+    }
+  </style>
+  <body>
+    <div class="top-right">
+      <div class="notification">
+        <a>
+          <img
+            src="{{ url_for('static', filename='img/iconMessage.png') }}"
+            alt="message"
+          />
+        </a>
+      </div>
+      <div class="iconChat">
+        <a>
+          <img
+            src="{{ url_for('static', filename='img/iconChat.png') }}"
+            alt="chat"
+          />
+        </a>
+      </div>
+      <button id="outBtn">LogOut</button>
+    </div>
+    <div class="container">
+      <h1>토치에게 편지를 전달할 사람의 이름을 말해주세요</h1>
+      <img
+        src="{{ url_for('static', filename='img/mascot.png') }}"
+        alt="Mascot"
+        class="maskote"
+      />
+      <select id="input-box">
+        {% for user in name_list %}
+        <option value="{{ user.id }}">{{ user.name }}</option>
+        {% endfor %}
+      </select>
+      <button id="submitButton">선택하기</button>
+    </div>
+    <script>
+      const submitButton = document.getElementById("submitButton");
+      const messageIcon = document.querySelector(".notification");
+      const iconChat = document.querySelector(".iconChat");
+      const idInput = document.getElementById("input-box");
 
-            submitButton.addEventListener('click', function () {
-                const selectedUserId = idInput.value;
-                localStorage.setItem('selectedUserId', selectedUserId);
-                console.log(selectedUserId);
-                window.location.href = '/question';
-            });
-            messageIcon.addEventListener('click', (e) => {
-                window.location.href = '/inbox';
-            });
+      submitButton.addEventListener("click", function () {
+        const selectedUserId = idInput.value;
+        localStorage.setItem("selectedUserId", selectedUserId);
+        console.log(selectedUserId);
+        window.location.href = "/question";
+      });
+      messageIcon.addEventListener("click", (e) => {
+        window.location.href = "/inbox";
+      });
 
-            iconChat.addEventListener('click', (e) => {
-                e.preventDefault();
-                console.log('chat click');
-                window.location.href = '/chat';
-            });
+      iconChat.addEventListener("click", (e) => {
+        e.preventDefault();
+        console.log("chat click");
+        window.location.href = "/chat";
+      });
 
-            const outBtn = document.getElementById('outBtn');
-            outBtn.addEventListener('click', function () {
-                window.location.href = '/';
-            });
-        </script>
-    </body>
+      const outBtn = document.getElementById("outBtn");
+      outBtn.addEventListener("click", function () {
+        window.location.href = "/";
+      });
+    </script>
+  </body>
 </html>
