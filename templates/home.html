@@ -111,6 +111,7 @@
                 border-radius: 20px;
             }
         </style>
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     </head>
     <body>
         <div class="top-right">
@@ -127,9 +128,14 @@
             </div>
         </div>
         <div class="container">
-            <h1>또치에게 상대방 이름을 말해주세요</h1>
+            <h1>{{title}}</h1>
             <img src="{{ url_for('static', filename='img/mascot.png') }}" alt="Mascot" class="maskote" />
-            <input type="text" class="input-box" id="id-input" placeholder="이름을 입력하세요" />
+            <!-- <input type="text" class="input-box" id="id-input" placeholder="이름을 입력하세요" /> -->
+            <select class="input-box" id="id-input">
+                {% for idx in name_list %}
+                <option>{{ idx }}</option>
+                {% endfor %}
+            </select>
             <button id="submitButton">선택하기</button>
         </div>
         <script>

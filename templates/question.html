@@ -128,7 +128,7 @@
             </div>
         </div>
         <div class="container">
-            <h1>또치에게 상대방에게 전달하고 싶은 메세지를 말해주세요</h1>
+            <h1>{{title}}</h1>
             <img src="{{ url_for('static', filename='img/mascot.png') }}" alt="Mascot" class="maskote" />
             <input type="text" class="input-box" id="message-input" placeholder="전달하고 싶은 메세지를 입력하세요" />
             <button id="submitButton">선택하기</button>
@@ -140,8 +140,7 @@
                 e.preventDefault();
                 const userId = localStorage.getItem('token');
                 const userMessage = messageInput.value;
-                console.log(userMessage);
-                console.log(userId);
+                console.log('서버에 전송한 데이터 유저 이름 질문',userId,userMessage);
                 postUserQuestion(userId, userMessage);
             });
 
@@ -162,10 +161,10 @@
             const iconChat = document.querySelector('.iconChat');
 
             submitButton.addEventListener('click', function () {
-                const userName = idInput.value;
+                const userName = messageInput.value;
                 localStorage.setItem('inputedUsername', userName);
                 console.log(userName);
-                window.location.href = '/question';
+                window.location.href = '/homepage';
             });
 
             messageIcon.addEventListener('click', (e) => {
@@ -187,7 +186,7 @@
                 //         alert('Error: ' + e.responseText);
                 //     },
                 // });
-                window.location.href = '/inbox';
+                // window.location.href = '/inbox';
             });
 
             iconChat.addEventListener('click', (e) => {
