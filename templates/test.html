@@ -1,0 +1,18 @@
+<script>
+  function postArticle() {
+    $.ajax({
+      type: "POST",
+      url: "/memo",
+      data: {},
+      success: function (response) {
+        // 성공하면
+        if (response["result"] == "success") {
+          alert(response["msg"]);
+        }
+      },
+    });
+  }
+</script>
+<button type="button" class="btn btn-primary" onclick="postArticle()">
+  기사저장
+</button>

@@ -84,8 +84,8 @@ def api_register():
     return jsonify({'result':'success'})
 
 #질문 폼 api
-@app.route("/question",methods=["POST"])
-def question():
+@app.route("/question/send",methods=["POST"])
+def questionSend():
     print("질문 폼 요청값:",request.json)
     #입력받은 폼 파싱
     u_id    = request.json['u_id']
@@ -94,7 +94,7 @@ def question():
     now_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
     # 디비 연동
-    db.messages.insert_one({'id': u_id, 'message': msg, 'stat_appr': False, 'stat_read': False, 'date':now_date})
+    db.messages.insert_one({'id': u_id, 'message': msg, 'stat_appr': 'False', 'stat_read': False, 'date':now_date})
     # 수신자와 질문내용 그리고 처리되지 않았다는 의미의 플래그를 질문 테이블에 저장
     return jsonify({"result":"success"})
 
@@ -103,17 +103,27 @@ def question():
 def recevedMsg():
     u_id = request.args.get("u_id")
    #디비연동코드
+    print(u_id)
    #메시지 변수에 해당 아이디가 가지고 있는 정보 전부전달
-    messages=list(db.messages.find({'id':u_id}))
+    messages=objectIdDecoder(list(db.messages.find({'id':u_id})))
+    print(messages)
    #질문테이블에서 본인 아이디의 받은 메시지를 select
-    return jsonify({'result':'success','data':messages})
+    return render_template('h')
+
+# objectId제거 함수
+def objectIdDecoder(list):
+  results=[]
+  for document in list:
+    document['_id'] = str(document['_id'])
+    results.append(document)
+  return results    
 
 #받은 메시지 관리자 api
 @app.route("/adminMsg", methods=["POST"])
 def adminMsg() :
    #디비연동코드
    #질문테이블에서 모든 메시지를 select
-    messages=list(db.messages.find())
+    messages=list(db.messages.find({'_id':False}))
     return jsonify({'result':'success','data':messages})
  
 #메시지 읽음처리 api
@@ -127,10 +137,13 @@ def msgRead():
 #메시지 승인/거절 api
 @app.route('/adminMsg/check', methods=['POST'])
 def msgCheck():
-    msg_id    = request.json['msg_id']
-    status  = request.json['status']
-    db.message.update_one({'_id':msg_id},{'$set':{'stat_appr':status }})
+   #  msg_id     = request.json['msg_id']
+   #  status     = request.json['status']
+    msg_id     = "6684b711db12e679fd9d8651"
+    status     = "ignore"
 
+    db.message.update_one({'_id':msg_id},{'$set':{'stat_appr':status }})
+    print(db.message.find_one({'_id':msg_id}))
     #디비 연동 코드
     #디비에 해당 메시지 상태 업데이트
     
@@ -156,6 +169,7 @@ def home_page():
 @app.route('/question')
 def question():
     return render_template('question.html')
+
 
 @app.route('/test')
 def testFunc():
