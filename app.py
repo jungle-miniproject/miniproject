@@ -128,18 +128,6 @@ def recevedMsg():
    #질문테이블에서 본인 아이디의 받은 메시지를 select
     return render_template('inbox.html')
 
-#받은 메시지 출력 api테스트 ################################################testtesttesttestttestttes
-@app.route("/receive", methods=["POST"])
-def recevedMsg():
-    u_id = request.json['u_id']
-    print(u_id)
-   #디비연동코드
-   #메시지 변수에 해당 아이디가 가지고 있는 정보 전부전달
-   #질문테이블에서 본인 아이디의 받은 메시지를 select
-    messages=objectIdDecoder(list(db.messages.find({'id':u_id})))
-    print(messages)
-    return render_template('inbox.html')
-
 # objectId제거 함수
 def objectIdDecoder(list):
   results=[]
