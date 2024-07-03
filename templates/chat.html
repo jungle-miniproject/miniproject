@@ -17,15 +17,16 @@
                 const messageList = document.getElementById('messages');
 
                 socket.on('connect', function () {
-                    console.log('Connected to server');
+                    socket.emit('my event', { data: "I'm connected!" });
                 });
 
                 socket.on('message', function (msg) {
-                    console.log(msg.message)
+                    console.log('msg', msg);
+                    console.log(msg.message);
                     const li = document.createElement('li');
-                    li.textContent = msg;
+                    li.textContent = msg.message;
                     messageList.appendChild(li);
-                    console.log('Received Message: ' + msg);
+                    console.log('socket id', socket.id);
                 });
 
                 function sendMessage() {
