@@ -39,7 +39,12 @@ def login():
 
     access_token = create_access_token(identity=username)
     print(access_token)
-    return jsonify({'token':access_token})
+    return jsonify({'result':'success','token':access_token})
+
+@app.route("/authChk",methods=['POST'])
+def authChk():
+    access_token = request.json['token']
+    
 
 # def check_access_token(access_token):
 #     try:
@@ -65,10 +70,10 @@ def protected():
 #로그인 성공시 hompage창
 @app.route("/test_home")
 def testHome():
-    user_list=list(db.users.find({}))
+    user_list=list(db.users.find({},{'_id':0,'id':0,'password':0,'admin':0}))
     print("이게뭐람",user_list)
    #  return jsonify({'data':user_list})
-    return jsonify({'data':'success'})
+    return jsonify({'result':'success','data':user_list})
 
 
 #가입창 클릭시 가입화면전환
@@ -123,6 +128,18 @@ def recevedMsg():
    #질문테이블에서 본인 아이디의 받은 메시지를 select
     return render_template('inbox.html')
 
+#받은 메시지 출력 api테스트 ################################################testtesttesttestttestttes
+@app.route("/receive", methods=["POST"])
+def recevedMsg():
+    u_id = request.json['u_id']
+    print(u_id)
+   #디비연동코드
+   #메시지 변수에 해당 아이디가 가지고 있는 정보 전부전달
+   #질문테이블에서 본인 아이디의 받은 메시지를 select
+    messages=objectIdDecoder(list(db.messages.find({'id':u_id})))
+    print(messages)
+    return render_template('inbox.html')
+
 # objectId제거 함수
 def objectIdDecoder(list):
   results=[]
@@ -137,6 +154,7 @@ def adminMsg() :
    #디비연동코드
    #질문테이블에서 모든 메시지를 select
     messages=list(db.messages.find({'_id':False}))
+    print("messgae:",messages)
     return jsonify({'result':'success','data':messages})
  
 #메시지 읽음처리 api
@@ -152,6 +170,7 @@ def msgRead():
         object_id = ObjectId(msg_id)
     except Exception as e:
         return jsonify({"error": "Invalid msg_id format"}), 400
+    
     #해당 메시지의 상태값 수정
     db.messages.update_one({'_id':object_id},{'$set':{'stat_read':True }})
     return jsonify({'result':'success'})
@@ -265,7 +284,10 @@ def chatpage():
 def adminhome():
     return render_template('adminhome.html')
 
-@app.route('/test')
+@app.route('/test2')
+def test2():
+    return render_template('test2.html')
+
 def testFunc():
    #  db.users.insert_one({'id':'test2','password':'qwer','name':'test','admin':'False'})
     db.message.insert_one({'id':'test1','message':'hi hello nihao','stat_appr':'False','stat_read':'False','date':'2024-07-02'})
