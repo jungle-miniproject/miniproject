@@ -93,7 +93,7 @@
 
             .input-box {
                 width: 423px;
-                min-height: 57px;
+                min-height: 80px;
                 background: #ffffff;
                 box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
                 border-radius: 20px;
@@ -127,20 +127,36 @@
             </div>
         </div>
         <div class="container">
-            <h1>또치에게 상대방 이름을 말해주세요</h1>
+            <h1>또치에게 상대방에게 전달하고 싶은 메세지를 말해주세요</h1>
             <img src="{{ url_for('static', filename='img/mascot.png') }}" alt="Mascot" class="maskote" />
-            <input type="text" class="input-box" id="id-input" placeholder="이름을 입력하세요" />
+            <input type="text" class="input-box" id="message-input" placeholder="전달하고 싶은 메세지를 입력하세요" />
             <button id="submitButton">선택하기</button>
         </div>
         <script>
             const submitButton = document.getElementById('submitButton');
-            const idInput = document.getElementById('id-input');
-            submitButton.addEventListener('click', function () {
-                const userName = idInput.value;
-                localStorage.setItem('inputedUsername', userName);
-                console.log(userName);
-                window.location.href = '/question';
+            const messageInput = document.getElementById('message-input');
+            submitButton.addEventListener('click', function (e) {
+                e.preventDefault();
+                const userId = localStorage.getItem('inputedUsername');
+                const userMessage = messageInput.value;
+                console.log(userMessage);
+                console.log(userId);
+                postUserQuestion(userId, userMessage);
             });
+
+            const postUserQuestion = async (userId, userMessage) => {
+                try {
+                    const response = await fetch('/quetion', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ u_id: userId, msg: userMessage }),
+                    });
+                } catch (e) {
+                    alert(e);
+                }
+            };
         </script>
     </body>
 </html>

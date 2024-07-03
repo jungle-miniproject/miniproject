@@ -33,9 +33,12 @@ const postSignUp = async () => {
     }
     if (isValid) {
         try {
-            const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
+            const response = await fetch('/signup', {
                 method: 'POST',
-                body: { id: userId, pwd: userPwd, name: userName },
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ id: userId, pwd: userPwd, name: userName })
             });
             const data = await response.json();
             console.log('Response:', data);
