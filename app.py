@@ -1,6 +1,6 @@
 from bson import ObjectId
-from flask import Flask, render_template, jsonify, request
-from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
+from flask import Flask, make_response, render_template, jsonify, request
+from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager, decode_token
 from datetime import datetime, timedelta
 from pymongo import MongoClient
 
@@ -39,16 +39,35 @@ def login():
 
     access_token = create_access_token(identity=username)
     print(access_token)
+   #  resp = make_response()
+   #  resp.set_cookie('token',access_token)
     return jsonify({'result':'success','token':access_token})
 
+#사용자 권환 확인 api
 @app.route("/authChk",methods=['POST'])
 def authChk():
-    access_token = request.json['token']
+    token = request.json.get('token')
+    print("token:",token)
+    if not token:
+        return jsonify({'msg':'Token is missing'}), 400
+    
+    try:
+        decoded_token = decode_token(token)
+        identity = decoded_token['sub']
+        authority=db.users.find_one({'id':identity},{'_id':0,'id':0,'password':0,'name':0})
+        print("autaut",authority)
+        print("authauth",authority['admin'])
+        if authority['admin'] == True :
+            return render_template('')
+        return jsonify(logged_in_as=identity),200
+    except Exception as e:
+        return jsonify({"msg":"Invalid token"}), 400
     
 
 # def check_access_token(access_token):
+#     token = request.
 #     try:
-#         payload = jwt.decode
+#         payload = jwt.decode()
 
 # def login_required(f):
 #     @wraps(f)
@@ -95,7 +114,7 @@ def api_register():
    #비밀번호 암호화 코드 필요
    #  print(reg_id)   
    #디비연동
-    db.users.insert_one({'id':reg_id,'password':reg_pwd,'name':reg_name, 'admin':"False"})
+    db.users.insert_one({'id':reg_id,'password':reg_pwd,'name':reg_name, 'admin':False})
     find_one = db.users.find({'id':'test'})
     print(find_one)
    #아이디와 패스워드 이름을 가입자 테이블에 추가
@@ -112,21 +131,33 @@ def questionSend():
     now_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
     # 디비 연동
-    db.messages.insert_one({'id': u_id, 'message': msg, 'stat_appr': 'False', 'stat_read': False, 'date':now_date})
+    db.messages.insert_one({'id': u_id, 'message': msg, 'stat_appr': 'Ignore', 'stat_read': False, 'date':now_date})
     # 수신자와 질문내용 그리고 처리되지 않았다는 의미의 플래그를 질문 테이블에 저장
     return jsonify({"result":"success"})
 
 #받은 메시지 출력 api
-@app.route("/receive", methods=["POST"])
+@app.route("/inbox", methods=["POST","GET"])
 def recevedMsg():
-    u_id = request.json['u_id']
+    token = request.cookies.get('token')
+   #  token = request.json.get('token')
+    print("token:",token)
+    if not token:
+        return jsonify({'msg':'Token is missing'}), 400
+    
+    try:
+        decoded_token = decode_token(token)
+        u_id = decoded_token['sub']
+        messages=objectIdDecoder(list(db.messages.find({'id':u_id})))
+        print('message:',messages)
+      #   return jsonify({'redirect':'/inboxRedirect'})
+        return render_template('inbox.html',messagelist=messages)
+
+    except Exception as e:
+        return jsonify({"msg":"Invalid token"}), 400
    #디비연동코드
-    print(u_id)
    #메시지 변수에 해당 아이디가 가지고 있는 정보 전부전달
-    messages=objectIdDecoder(list(db.messages.find({'id':u_id})))
-    print(messages)
+
    #질문테이블에서 본인 아이디의 받은 메시지를 select
-    return render_template('inbox.html')
 
 # objectId제거 함수
 def objectIdDecoder(list):
@@ -137,13 +168,13 @@ def objectIdDecoder(list):
   return results    
 
 #받은 메시지 관리자 api
-@app.route("/adminMsg", methods=["POST"])
+@app.route("/adminMsg", methods=["POST","GET"])
 def adminMsg() :
    #디비연동코드
    #질문테이블에서 모든 메시지를 select
     messages=list(db.messages.find({'_id':False}))
-    print("messgae:",messages)
-    return jsonify({'result':'success','data':messages})
+    print("message:",messages)
+    return render_template('adminhome.html',userMessageList=messages)
  
 #메시지 읽음처리 api
 @app.route('/receive/msgRead', methods=["POST"])
@@ -167,8 +198,8 @@ def msgRead():
 @app.route('/adminMsg/check', methods=['POST'])
 def msgCheck():
     print(request.json)
-    msg_id     = request.json['msg_id']
-    status     = request.json['status']
+    msg_id     = request.json['m_id']
+    status     = request.json['stat_appr']
    #  msg_id     = "6684b711db12e679fd9d8651"
    #  status     = "ignore"
    #  msg_id=getObjectId(msg_id)
@@ -227,8 +258,27 @@ def question():
 def test():
     return render_template('test.html')
 
+#리다이렉션 테스트 용으로 사용중
+@app.route('/inboxRedirect')
+def inboxRedirect():
+    return render_template('inbox.html',)
 
-@app.route('/inbox')
+#리다이렉션 Cookie 테스트 용으로 사용중
+@app.route('/cookie')
+def inboxCookie():
+    token = request.cookies.get('token')
+    decoded_token = decode_token(token)
+    u_id = decoded_token['sub']
+    messages=objectIdDecoder(list(db.messages.find({'id':u_id})))
+    print('message:',messages)
+    
+    return render_template('inbox.html',messagelist=messages)
+
+
+
+
+
+@app.route('/inboxdd')
 def inbox():
     messagelist = [
         {

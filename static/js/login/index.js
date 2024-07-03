@@ -26,8 +26,10 @@ const postLogin = () => {
       let access_token = response["token"];
       console.log(access_token);
       if (response["result"] == "success") {
-        localStorage.setItem("token", access_token);
-        window.location.href = "/homepage";
+        let access_token = response["token"];
+        document.cookie =
+          encodeURIComponent("token") + "=" + encodeURIComponent(access_token);
+        // window.location.href = "/homepage";
       } else {
         alert(response["msg"]);
       }
