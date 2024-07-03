@@ -58,9 +58,9 @@ def login():
     return jsonify({'result':'success','token':access_token})
 
 #사용자 권환 확인 api
-@app.route("/authChk",methods=['POST'])
+@app.route("/authChk",methods=['POST','GET'])
 def authChk():
-    token = request.json.get('token')
+    token = request.cookies.get('token')
     print("token:",token)
     if not token:
         return jsonify({'msg':'Token is missing'}), 400
@@ -68,13 +68,19 @@ def authChk():
     try:
         decoded_token = decode_token(token)
         identity = decoded_token['sub']
-        authority=db.users.find_one({'id':identity},{'_id':0,'id':0,'password':0,'name':0})
+        print("identity",identity)
+        authority=db.users.find_one({'id':identity},{'_id':0,'password':0,'name':0})
         print("autaut",authority)
         print("authauth",authority['admin'])
         if authority['admin'] == True :
-            return render_template('')
-        return jsonify(logged_in_as=identity),200
+            messages = list(db.messages.find({}))
+            print(messages)
+            return render_template('adminhome.html',userMessageList=messages)
+        messages = list(db.users.find({}))
+        print("messages:",messages)
+        return render_template('home.html',name_list=messages)
     except Exception as e:
+        print("error",e)
         return jsonify({"msg":"Invalid token"}), 400
     
 
@@ -139,7 +145,7 @@ def api_register():
 def questionSend():
     print("질문 폼 요청값:",request.json)
     #입력받은 폼 파싱
-    u_id    = request.json['u_id']
+    u_id    = request.json['id']
     msg     = request.json['msg']
 
     now_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -193,8 +199,8 @@ def adminMsg() :
 #메시지 읽음처리 api
 @app.route('/receive/msgRead', methods=["POST"])
 def msgRead():
-    print(request.json)
-    msg_id = request.json['msg_id']
+    print("test:",request.json)
+    msg_id = request.json['m_id']
 
     if msg_id is None:
         return jsonify({"error": "msg_id and status are required"}), 400
@@ -212,17 +218,19 @@ def msgRead():
 @app.route('/adminMsg/check', methods=['POST'])
 def msgCheck():
     print(request.json)
-    msg_id     = request.json['m_id']
+    m_id     = request.json['m_id']
     status     = request.json['stat_appr']
    #  msg_id     = "6684b711db12e679fd9d8651"
    #  status     = "ignore"
    #  msg_id=getObjectId(msg_id)
 
-    if msg_id is None or status is None:
+    if m_id is None or status is None:
         return jsonify({"error": "msg_id and status are required"}), 400
 
     try:
-        object_id = ObjectId(msg_id)
+        object_id = ObjectId(m_id)
+      #   db.messages.update_one({'_id':object_id},{'$set':{'stat_appr':status }})
+
     except Exception as e:
         return jsonify({"error": "Invalid msg_id format"}), 400
 
@@ -335,38 +343,6 @@ def chatpage():
 
 @app.route('/adminhome')
 def adminhome():
-    userMessageList = [
-        {
-            'id': 1,
-            'content': '안녕하세요, 첫 번째 편지입니다.',
-            'userRead': False,
-            'admin': False,
-        },
-        {
-            'id': 2,
-            'content': '두 번째 편지입니다. 새로운 소식이 있습니다.',
-            'userRead': True,
-            'admin': False,
-        },
-        {
-            'id': 3,
-            'content': '관리자가 보낸 중요한 알림입니다.',
-            'userRead': False,
-            'admin': True,
-        },
-        {
-            'id': 4,
-            'content': '네 번째 편지입니다. 오늘 날씨가 참 좋네요.',
-            'userRead': True,
-            'admin': False,
-        },
-        {
-            'id': 5,
-            'content': '다섯 번째 편지입니다. 주말 잘 보내세요.',
-            'userRead': False,
-            'admin': False,
-        },
-    ]
     return render_template('adminhome.html',userMessageList=userMessageList)
 
 @app.route('/test2')

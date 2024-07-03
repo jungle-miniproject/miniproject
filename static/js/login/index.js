@@ -29,7 +29,7 @@ const postLogin = () => {
         let access_token = response["token"];
         document.cookie =
           encodeURIComponent("token") + "=" + encodeURIComponent(access_token);
-        // window.location.href = "/homepage";
+        window.location.href = "/authChk";
       } else {
         alert(response["msg"]);
       }

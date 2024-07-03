@@ -1,23 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Received Letters</title>
-        <script
-            src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-            crossorigin="anonymous"
-        ></script>
-        <style>
-            body {
-                font-family: 'Arial', sans-serif;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                margin: 0;
-                background-color: white;
-            }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Received Letters</title>
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <style>
+      body {
+        font-family: "Arial", sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 0;
+        background-color: white;
+      }
 
       .container {
         width: 80%;
@@ -118,82 +118,89 @@
         color: white;
       }
 
-            .accept-btn {
-                background-color: blue;
-            }
+      .accept-btn {
+        background-color: blue;
+      }
 
-            .reject-btn {
-                background-color: red;
-            }
-            .success,
-            .delay {
-                z-index: 10;
-                margin-left: 10px;
-                position: relative;
-                text-wrap: nowrap;
-                left: 80%;
-                font-size: 7vh;
-                font-weight: 800;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <div class="header">
-                <h2>편지 리스트</h2>
-            </div>
-            <div class="grid-container" id="message-box">
-                {% for message in userMessageList %}
-                <div class="grid-item">
-                    <div class="letter-container letter-container-read" id="letterOutput{{ message['m_id'] }}">
-                        <div class="letter">{{ message['message'] }}</div>
-                    </div>
-                    {% if message['stat_appr'] == 'ignore' %}
-                    <div class="btn-container">
-                        <button class="accept-btn" data-id="{{ message['m_id'] }}">승인</button>
-                        <button class="reject-btn" data-id="{{ message['m_id'] }}">거절</button>
-                    </div>
-                    {% elif message['stat_appr'] == False %}
-                    <div class="delay">O</div>
-                    {% else %}
-                    <div class="success">X</div>
-                    {% endif %}
-                </div>
-                {% endfor %}
-            </div>
+      .reject-btn {
+        background-color: red;
+      }
+      .success,
+      .delay {
+        z-index: 10;
+        margin-left: 10px;
+        position: relative;
+        text-wrap: nowrap;
+        left: 80%;
+        font-size: 7vh;
+        font-weight: 800;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h2>편지 리스트</h2>
+      </div>
+      <div class="grid-container" id="message-box">
+        {% for message in userMessageList %}
+        <div class="grid-item">
+          <div
+            class="letter-container letter-container-read"
+            id="letterOutput{{ message['_id'] }}"
+          >
+            <div class="letter">{{ message['message'] }}</div>
+          </div>
+          {% if message['stat_appr'] == 'Ignore' %}
+          <div class="btn-container">
+            <button class="accept-btn" data-id="{{ message['_id'] }}">
+              승인
+            </button>
+            <button class="reject-btn" data-id="{{ message['_id'] }}">
+              거절
+            </button>
+          </div>
+          {% elif message['stat_appr'] == 'False' %}
+          <div class="delay">X</div>
+          {% else %}
+          <div class="success">O</div>
+          {% endif %}
         </div>
-        <script>
-            window.addEventListener('load', function () {
-                $(document).on('click', '.accept-btn', function () {
-                    let messageId = $(this).data('id');
-                    console.log(messageId);
-                    acceptUserMessage(messageId, true);
-                });
+        {% endfor %}
+      </div>
+    </div>
+    <script>
+      window.addEventListener("load", function () {
+        $(document).on("click", ".accept-btn", function () {
+          let messageId = $(this).data("id");
+          console.log(messageId);
+          acceptUserMessage(messageId, "True");
+        });
 
-                $(document).on('click', '.reject-btn', function () {
-                    let messageId = $(this).data('id');
-                    console.log(messageId);
-                    acceptUserMessage(messageId, false);
-                });
+        $(document).on("click", ".reject-btn", function () {
+          let messageId = $(this).data("id");
+          console.log(messageId);
+          acceptUserMessage(messageId, "False");
+        });
 
-                function acceptUserMessage(id, content) {
-                    $.ajax({
-                        type: 'POST',
-                        url: '/adminMsg/check',
-                        contentType: 'application/json',
-                        data: JSON.stringify({ _id: id, status: content }),
-                        success: function (response) {
-                            console.log(response);
-                            // window.location.reload();
-                        },
-                        error: function (e) {
-                            console.error('Error:', e);
-                        },
-                    });
-                    console.log('click', id, content);
-                }
-            });
-        </script>
-        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    </body>
+        function acceptUserMessage(id, content) {
+          $.ajax({
+            type: "POST",
+            url: "/adminMsg/check",
+            contentType: "application/json",
+            data: JSON.stringify({ m_id: id, stat_appr: content }),
+            success: function (response) {
+              console.log(response);
+              window.location.reload();
+            },
+            error: function (e) {
+              console.error("Error:", e);
+            },
+          });
+          console.log("click", id, content);
+        }
+      });
+    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  </body>
 </html>
