@@ -41,6 +41,18 @@ def login():
     print(access_token)
     return jsonify({'token':access_token})
 
+# def check_access_token(access_token):
+#     try:
+#         payload = jwt.decode
+
+# def login_required(f):
+#     @wraps(f)
+#     def decorated_function(*args, **kwagrs):
+#         access_token = request.headers.get('Authorization')
+#         if access_token is not None:
+#             payload = check_access_token(access_token) #토큰의 유효성 확인
+
+
 # Protect a route with jwt_required, which will kick out requests
 # without a valid JWT present.
 @app.route("/protected", methods=["GET"])
@@ -100,9 +112,9 @@ def questionSend():
     return jsonify({"result":"success"})
 
 #받은 메시지 출력 api
-@app.route("/receive", methods=["GET"])
+@app.route("/receive", methods=["POST"])
 def recevedMsg():
-    u_id = request.args.get("u_id")
+    u_id = request.json['u_id']
    #디비연동코드
     print(u_id)
    #메시지 변수에 해당 아이디가 가지고 있는 정보 전부전달
