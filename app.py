@@ -169,6 +169,7 @@ def home_page():
 @app.route('/question')
 def question():
     return render_template('question.html')
+@app.route('/test')
 
 
 @app.route('/test')
