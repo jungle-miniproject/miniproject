@@ -1,14 +1,28 @@
+from flask import session 
+from flask_socketio import emit
+
+def socketio_init(socketio):
+    @socketio.on('testSocket',namespace='/test')
+    def testEvent(message):
+        tsession = session.get('test')
+        print('received message'+str(message))
+        retMessage = { 'msg' : "hello response" }
+        emit('test',retMessage,callback=tsession)
+        
 from bson import ObjectId
 from flask import Flask, make_response, render_template, jsonify, request
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager, decode_token
 from datetime import datetime, timedelta
 from pymongo import MongoClient
+from flask_socketio import SocketIO
+from flask_socketio import SocketIO, send
 
 #pymongo 변수 선언
 client = MongoClient('localhost',27017)
 db = client.w00_jungdaejun
 
 app = Flask(__name__)
+socket_io = SocketIO(app)
 
 admin_id = "hjo"
 admin_pw = "12345"
@@ -359,15 +373,21 @@ def adminhome():
 def test2():
     return render_template('test2.html')
 
-def testFunc():
-   #  db.users.insert_one({'id':'test2','password':'qwer','name':'test','admin':'False'})
-    db.message.insert_one({'id':'test1','message':'hi hello nihao','stat_appr':'False','stat_read':'False','date':'2024-07-02'})
-    db.message.insert_one({'id':'test2','message':'hi hello nihao','stat_appr':'False','stat_read':'False','date':'2024-07-02'})
+@app.route('/chat')
+def chatting():    
+    return render_template('chat.html')
 
-    all_users = list(db.users.find({}))
-    print(all_users)
-    return jsonify({'result':'success'})
-
+@socket_io.on("message")
+def handle_message(message):    
+    print("message: " + message)    
+    to_client = {}
+    if message == 'new_connect':        
+        to_client['message'] = "새로운 유저가 난입하였다!!"        
+        to_client['type'] = 'connect'    
+    else:        
+        to_client['message'] = message        
+        to_client['type'] = 'normal'    
+    send(to_client, broadcast=True)
 
 if __name__ == '__main__':  
    app.run('0.0.0.0',port=5001,debug=True)
