@@ -4,6 +4,7 @@ from flask_socketio import emit
 def socketio_init(socketio):
     @socketio.on('testSocket',namespace='/test')
     def testEvent(message):
+        print('socketio',socketio)
         tsession = session.get('test')
         print('received message'+str(message))
         retMessage = { 'msg' : "hello response" }
@@ -297,31 +298,31 @@ def inbox():
     messagelist = [
         {
             'id': 1,
-            'content': '안녕하세요, 첫 번째 편지입니다.',
+            'stat_appr': '안녕하세요, 첫 번째 편지입니다.',
             'userRead': False,
             'admin': False,
         },
         {
             'id': 2,
-            'content': '두 번째 편지입니다. 새로운 소식이 있습니다.',
+            'stat_appr': '두 번째 편지입니다. 새로운 소식이 있습니다.',
             'userRead': True,
             'admin': False,
         },
         {
             'id': 3,
-            'content': '관리자가 보낸 중요한 알림입니다.',
+            'stat_appr': '관리자가 보낸 중요한 알림입니다.',
             'userRead': False,
             'admin': True,
         },
         {
             'id': 4,
-            'content': '네 번째 편지입니다. 오늘 날씨가 참 좋네요.',
+            'stat_appr': '네 번째 편지입니다. 오늘 날씨가 참 좋네요.',
             'userRead': True,
             'admin': False,
         },
         {
             'id': 5,
-            'content': '다섯 번째 편지입니다. 주말 잘 보내세요.',
+            'stat_appr': '다섯 번째 편지입니다. 주말 잘 보내세요.',
             'userRead': False,
             'admin': False,
         },
@@ -338,33 +339,33 @@ def adminhome():
     userMessageList = [
         {
             'id': 1,
-            'content': '안녕하세요, 첫 번째 편지입니다.',
+            'message': '안녕하세요, 첫 번째 편지입니다.',
             'userRead': False,
-            'admin': False,
+            'stat_appr': 'False',
         },
         {
             'id': 2,
-            'content': '두 번째 편지입니다. 새로운 소식이 있습니다.',
+            'message': '두 번째 편지입니다. 새로운 소식이 있습니다.',
             'userRead': True,
-            'admin': False,
+            'stat_appr': 'False',
         },
         {
             'id': 3,
-            'content': '관리자가 보낸 중요한 알림입니다.',
+            'message': '관리자가 보낸 중요한 알림입니다.',
             'userRead': False,
-            'admin': True,
+            'stat_appr': 'ignore',
         },
         {
             'id': 4,
-            'content': '네 번째 편지입니다. 오늘 날씨가 참 좋네요.',
+            'message': '네 번째 편지입니다. 오늘 날씨가 참 좋네요.',
             'userRead': True,
-            'admin': False,
+            'stat_appr': 'False',
         },
         {
             'id': 5,
-            'content': '다섯 번째 편지입니다. 주말 잘 보내세요.',
+            'message': '다섯 번째 편지입니다. 주말 잘 보내세요.',
             'userRead': False,
-            'admin': False,
+            'stat_appr': 'False',
         },
     ]
     return render_template('adminhome.html',userMessageList=userMessageList)
@@ -383,11 +384,12 @@ def handle_message(message):
     to_client = {}
     if message == 'new_connect':        
         to_client['message'] = "새로운 유저가 난입하였다!!"        
-        to_client['type'] = 'connect'    
+        to_client['type'] = 'connect'  
     else:        
         to_client['message'] = message        
         to_client['type'] = 'normal'    
-    send(to_client, broadcast=True)
+        print('socket_io',socket_io)  
+    send({'sender': request.sid, 'message': message}, broadcast=True)
 
 if __name__ == '__main__':  
    app.run('0.0.0.0',port=5001,debug=True)
