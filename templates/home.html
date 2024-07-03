@@ -112,6 +112,16 @@
             box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
             border-radius: 20px;
         }
+        #outBtn {
+            width: 80px;
+            height: 40px;
+            background-color: salmon;
+            border: 0px;
+            color: white;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 700;
+        }
     </style>
     <body>
         <div class="top-right">
@@ -126,6 +136,7 @@
                     <img src="{{ url_for('static', filename='img/iconChat.png') }}" alt="chat" />
                 </a>
             </div>
+            <button id="outBtn">LogOut</button>
         </div>
         <div class="container">
             <h1>{{ title }}</h1>
@@ -151,31 +162,17 @@
             });
             messageIcon.addEventListener('click', (e) => {
                 window.location.href = '/inbox';
-
-                // e.preventDefault();
-                // const token = localStorage.getItem("token");
-                // console.log(token);
-                // $.ajax({
-                //   type: "POST",
-                //   url: `/inbox`,
-                //   data: JSON.stringify({
-                //     token: token,
-                //   }),
-                //   contentType: "application/json",
-                //   success: function (response) {
-
-                // },
-                //   error: function (e) {
-                //     alert("Error: " + e.responseText);
-                //     window.location.reload();
-                //   },
-                // });
             });
 
             iconChat.addEventListener('click', (e) => {
                 e.preventDefault();
                 console.log('chat click');
                 window.location.href = '/chat';
+            });
+
+            const outBtn = document.getElementById('outBtn');
+            outBtn.addEventListener('click', function () {
+                window.location.href = '/';
             });
         </script>
     </body>

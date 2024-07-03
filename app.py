@@ -199,7 +199,12 @@ def question():
 #리다이렉션 테스트 용으로 사용중
 @app.route('/inboxRedirect')
 def inboxRedirect():
-    return render_template('inbox.html',)
+    return render_template('inbox.html')
+
+#리다이렉션 테스트 용으로 사용중
+@app.route('/test')
+def test():
+    return render_template('test.html')
 
 #리다이렉션 Cookie 테스트 용으로 사용중
 @app.route('/cookie')
