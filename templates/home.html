@@ -115,13 +115,13 @@
     <body>
         <div class="top-right">
             <div class="notification">
-                <a href="https://example.com/email">
+                <a>
                     <img src="{{ url_for('static', filename='img/iconMessage.png') }}" alt="message" />
                     <div class="badge">1</div>
                 </a>
             </div>
             <div class="iconChat">
-                <a href="https://example.com/chat">
+                <a>
                     <img src="{{ url_for('static', filename='img/iconChat.png') }}" alt="chat" />
                 </a>
             </div>
@@ -134,12 +134,41 @@
         </div>
         <script>
             const submitButton = document.getElementById('submitButton');
+            const messageIcon = document.querySelector('.notification');
+            const iconChat = document.querySelector('.iconChat');
             const idInput = document.getElementById('id-input');
+
             submitButton.addEventListener('click', function () {
                 const userName = idInput.value;
                 localStorage.setItem('inputedUsername', userName);
                 console.log(userName);
                 window.location.href = '/question';
+            });
+
+            messageIcon.addEventListener('click', (e) => {
+                e.preventDefault();
+                const token = localStorage.getItem('token');
+                console.log(token);
+                $.ajax({
+                    type: 'POST',
+                    url: `/receive`,
+                    data: JSON.stringify({
+                        token: token,
+                    }),
+                    contentType: 'application/json',
+                    success: function (response) {
+                        console.log(response);
+                    },
+                    error: function (e) {
+                        alert('Error: ' + e.responseText);
+                    },
+                });
+            });
+
+            iconChat.addEventListener('click', (e) => {
+                e.preventDefault();
+                console.log('chat click');
+                window.location.href = '/chat';
             });
         </script>
     </body>
