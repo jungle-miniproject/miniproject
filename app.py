@@ -1,15 +1,5 @@
 from flask import session 
-from flask_socketio import emit
-
-def socketio_init(socketio):
-    @socketio.on('testSocket',namespace='/test')
-    def testEvent(message):
-        print('socketio',socketio)
-        tsession = session.get('test')
-        print('received message'+str(message))
-        retMessage = { 'msg' : "hello response" }
-        emit('test',retMessage,callback=tsession)
-        
+from flask_socketio import emit        
 from bson import ObjectId
 from flask import Flask, make_response, render_template, jsonify, request
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager, decode_token
@@ -47,15 +37,9 @@ def login():
     if user_id['password'] != password :
         print("fail")
         return jsonify({"ressult":"false"}), 401
-    
-
-   #  if username != admin_id or password != admin_pw: # 만약 아이디와 비밀번호가 다를 시 에러 처리
-   #      return jsonify({"msg": "Bad username or password"}), 401
 
     access_token = create_access_token(identity=username)
     print(access_token)
-   #  resp = make_response()
-   #  resp.set_cookie('token',access_token)
     return jsonify({'result':'success','token':access_token})
 
 #사용자 권환 확인 api
@@ -83,38 +67,6 @@ def authChk():
     except Exception as e:
         print("error",e)
         return jsonify({"msg":"Invalid token"}), 400
-    
-
-# def check_access_token(access_token):
-#     token = request.
-#     try:
-#         payload = jwt.decode()
-
-# def login_required(f):
-#     @wraps(f)
-#     def decorated_function(*args, **kwagrs):
-#         access_token = request.headers.get('Authorization')
-#         if access_token is not None:
-#             payload = check_access_token(access_token) #토큰의 유효성 확인
-
-
-# Protect a route with jwt_required, which will kick out requests
-# without a valid JWT present.
-@app.route("/protected", methods=["GET"])
-@jwt_required()
-def protected():
-    # Access the identity of the current user with get_jwt_identity
-    current_user = get_jwt_identity()
-    return jsonify(logged_in_as=current_user), 200
-
-#로그인 성공시 hompage창
-@app.route("/test_home")
-def testHome():
-    user_list=list(db.users.find({},{'_id':0,'id':0,'password':0,'admin':0}))
-    print("이게뭐람",user_list)
-   #  return jsonify({'data':user_list})
-    return jsonify({'result':'success','data':user_list})
-
 
 #가입창 클릭시 가입화면전환
 @app.route("/signup", methods=["POST"])
@@ -124,8 +76,6 @@ def register():
 #가입화면에서 가입버튼 클릭 시 폼 전달
 @app.route('/signup/api', methods=['POST'])
 def api_register():
-    
-   #  print(request)
    #  # 전달받은 request form 파싱
     reg_id     = request.json['id'] 
     reg_pwd    = request.json['pwd']
@@ -133,7 +83,6 @@ def api_register():
     reg_admin  = False
 
    #비밀번호 암호화 코드 필요
-   #  print(reg_id)   
    #디비연동
     db.users.insert_one({'id':reg_id,'password':reg_pwd,'name':reg_name, 'admin':False})
     find_one = db.users.find({'id':'test'})
@@ -175,10 +124,6 @@ def recevedMsg():
 
     except Exception as e:
         return jsonify({"msg":"Invalid token"}), 400
-   #디비연동코드
-   #메시지 변수에 해당 아이디가 가지고 있는 정보 전부전달
-
-   #질문테이블에서 본인 아이디의 받은 메시지를 select
 
 # objectId제거 함수
 def objectIdDecoder(list):
@@ -221,30 +166,18 @@ def msgCheck():
     print(request.json)
     m_id     = request.json['m_id']
     status     = request.json['stat_appr']
-   #  msg_id     = "6684b711db12e679fd9d8651"
-   #  status     = "ignore"
-   #  msg_id=getObjectId(msg_id)
 
     if m_id is None or status is None:
         return jsonify({"error": "msg_id and status are required"}), 400
-
     try:
         object_id = ObjectId(m_id)
-      #   db.messages.update_one({'_id':object_id},{'$set':{'stat_appr':status }})
 
     except Exception as e:
         return jsonify({"error": "Invalid msg_id format"}), 400
 
     print('objectId:', object_id)
-
-   #  object_id=ObjectId(msg_id)
-   #  print('objectId:',object_id)
-   
     db.messages.update_one({'_id':object_id},{'$set':{'stat_appr':status }})
     print(db.messages.find_one({'_id':object_id}))
-    #디비 연동 코드
-    #디비에 해당 메시지 상태 업데이트
-    
     return jsonify({'result':'success'})
 
 @app.route('/')
@@ -259,27 +192,9 @@ def login_page():
 def signup_page():
     return render_template('signup.html')
 
-@app.route('/homepage')
-def home_page():
-    name_list = [
-        {
-            'name': '건우',
-            'id': 1
-        },
-        {
-            'name': '형욱',
-            'id': 2
-        }
-    ]
-    return render_template('home.html', title='또치에게 상대방 이름을 말해주세요', name_list=name_list)
-
 @app.route('/question')
 def question():
     return render_template('question.html', title='질문할 내용을 알려주세요')
-
-@app.route('/testet')
-def test():
-    return render_template('test.html')
 
 #리다이렉션 테스트 용으로 사용중
 @app.route('/inboxRedirect')
@@ -297,58 +212,14 @@ def inboxCookie():
     
     return render_template('inbox.html',messagelist=messages)
 
-
-
-
-
-@app.route('/inboxdd')
-def inbox():
-    messagelist = [
-        {
-            'id': 1,
-            'stat_appr': '안녕하세요, 첫 번째 편지입니다.',
-            'userRead': False,
-            'admin': False,
-        },
-        {
-            'id': 2,
-            'stat_appr': '두 번째 편지입니다. 새로운 소식이 있습니다.',
-            'userRead': True,
-            'admin': False,
-        },
-        {
-            'id': 3,
-            'stat_appr': '관리자가 보낸 중요한 알림입니다.',
-            'userRead': False,
-            'admin': True,
-        },
-        {
-            'id': 4,
-            'stat_appr': '네 번째 편지입니다. 오늘 날씨가 참 좋네요.',
-            'userRead': True,
-            'admin': False,
-        },
-        {
-            'id': 5,
-            'stat_appr': '다섯 번째 편지입니다. 주말 잘 보내세요.',
-            'userRead': False,
-            'admin': False,
-        },
-    ]
-    return render_template('inbox.html', messagelist=messagelist)
-
-
-@app.route('/chat')
-def chatpage():
-    return render_template('chat.html')
-
-@app.route('/adminhome')
-def adminhome():
-    return render_template('adminhome.html',userMessageList=userMessageList)
-
-@app.route('/test2')
-def test2():
-    return render_template('test2.html')
+def socketio_init(socketio):
+    @socketio.on('testSocket',namespace='/test')
+    def testEvent(message):
+        print('socketio',socketio)
+        tsession = session.get('test')
+        print('received message'+str(message))
+        retMessage = { 'msg' : "hello response" }
+        emit('test',retMessage,callback=tsession)
 
 @app.route('/chat')
 def chatting():    
