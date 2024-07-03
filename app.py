@@ -149,7 +149,6 @@ def msgCheck():
     
     return jsonify({'status':'success'})
 
-
 @app.route('/')
 def home():
     return render_template('login.html')
@@ -172,12 +171,19 @@ def question():
 @app.route('/test')
 
 
+@app.route('/inbox')
+def inbox():
+    return render_template('inbox.html')
+
+@app.route('/chat')
+def chatpage():
+    return render_template('chat.html')
+
 @app.route('/test')
 def testFunc():
    #  db.users.insert_one({'id':'test2','password':'qwer','name':'test','admin':'False'})
     db.message.insert_one({'id':'test1','message':'hi hello nihao','stat_appr':'False','stat_read':'False','date':'2024-07-02'})
     db.message.insert_one({'id':'test2','message':'hi hello nihao','stat_appr':'False','stat_read':'False','date':'2024-07-02'})
-
 
     all_users = list(db.users.find({}))
     print(all_users)
