@@ -110,40 +110,8 @@
     </head>
     <body>
         <script>
-            let lists = [
-                {
-                    id: 1,
-                    content: '안녕하세요, 첫 번째 편지입니다.',
-                    userRead: false,
-                    admin: false,
-                },
-                {
-                    id: 2,
-                    content: '두 번째 편지입니다. 새로운 소식이 있습니다.',
-                    userRead: true,
-                    admin: false,
-                },
-                {
-                    id: 3,
-                    content: '관리자가 보낸 중요한 알림입니다.',
-                    userRead: false,
-                    admin: true,
-                },
-                {
-                    id: 4,
-                    content: '네 번째 편지입니다. 오늘 날씨가 참 좋네요.',
-                    userRead: true,
-                    admin: false,
-                },
-                {
-                    id: 5,
-                    content: '다섯 번째 편지입니다. 주말 잘 보내세요.',
-                    userRead: false,
-                    admin: false,
-                },
-            ];
-
             window.addEventListener('load', function () {
+                const sortedList = lists.sort((a, b) => b.userRead - a.userRead);
                 for (let i = 0; i < lists.length; i++) {
                     let list = lists[i];
                     let content = list['content'];
@@ -183,9 +151,11 @@
                         data: { msg_id: id },
                         success: function (response) {
                             console.log(response);
+                            window.location.reload();
                         },
                         error(e) {
                             alert(e);
+                            window.location.reload();
                         },
                     });
                 }

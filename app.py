@@ -217,15 +217,23 @@ def login_page():
 def signup_page():
     return render_template('signup.html')
 
-
 @app.route('/homepage')
 def home_page():
-    name_list = ['건우','태민','형욱']
-    return render_template('home.html',title='또치에게 상대방 이름을 말해주세요',name_list=name_list)
+    name_list = [
+        {
+            'name': '건우',
+            'id': 1
+        },
+        {
+            'name': '형욱',
+            'id': 2
+        }
+    ]
+    return render_template('home.html', title='또치에게 상대방 이름을 말해주세요', name_list=name_list)
 
 @app.route('/question')
 def question():
-    return render_template('question.html')
+    return render_template('question.html', title='질문할 내용을 알려주세요')
 
 @app.route('/testet')
 def test():
@@ -234,6 +242,38 @@ def test():
 
 @app.route('/inbox')
 def inbox():
+    # messagelist = [
+    #     {
+    #         id: 1,
+    #         content: '안녕하세요, 첫 번째 편지입니다.',
+    #         userRead: false,
+    #         admin: false,
+    #     },
+    #     {
+    #         id: 2,
+    #         content: '두 번째 편지입니다. 새로운 소식이 있습니다.',
+    #         userRead: true,
+    #         admin: false,
+    #     },
+    #     {
+    #         id: 3,
+    #         content: '관리자가 보낸 중요한 알림입니다.',
+    #         userRead: false,
+    #         admin: true,
+    #     },
+    #     {
+    #         id: 4,
+    #         content: '네 번째 편지입니다. 오늘 날씨가 참 좋네요.',
+    #         userRead: true,
+    #         admin: false,
+    #     },
+    #     {
+    #         id: 5,
+    #         content: '다섯 번째 편지입니다. 주말 잘 보내세요.',
+    #         userRead: false,
+    #         admin: false,
+    #     },
+    # ],
     return render_template('inbox.html')
 
 @app.route('/chat')

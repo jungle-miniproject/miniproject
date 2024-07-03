@@ -1,64 +1,64 @@
 <!DOCTYPE html>
 <html lang="ko">
-  <head>
-    <meta charset="UTF-8" />
-    <title>1번 질문</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        position: relative;
-      }
-      .container {
-        text-align: center;
-      }
-      h1 {
-        font-weight: bold;
-        margin-bottom: 20px;
-      }
-      .main-image {
-        max-width: 40%;
-        height: auto;
-      }
-      .input-box {
-        margin: 20px 0;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        width: 300px;
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        height: 50px; /* 높이 조정 */
-        line-height: 30px; /* 텍스트 중앙 정렬 */
-        font-size: 16px; /* 폰트 크기 조정 */
-      }
-      .button {
-        padding: 10px 20px;
-        background-color: #000;
-        color: #fff;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        margin-top: 20px;
-      }
-      .button:hover {
-        background-color: #444;
-      }
-      .top-right {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        display: flex;
-        gap: 20px; /* 이미지 사이의 간격 설정 */
-      }
+    <head>
+        <meta charset="UTF-8" />
+        <title>2번 질문</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+                position: relative;
+            }
+            .container {
+                text-align: center;
+            }
+            h1 {
+                font-weight: bold;
+                margin-bottom: 20px;
+            }
+            .main-image {
+                max-width: 40%;
+                height: auto;
+            }
+            .input-box {
+                margin: 20px 0;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                width: 300px;
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                height: 50px; /* 높이 조정 */
+                line-height: 30px; /* 텍스트 중앙 정렬 */
+                font-size: 16px; /* 폰트 크기 조정 */
+            }
+            .button {
+                padding: 10px 20px;
+                background-color: #000;
+                color: #fff;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                margin-top: 20px;
+            }
+            .button:hover {
+                background-color: #444;
+            }
+            .top-right {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                display: flex;
+                gap: 20px; /* 이미지 사이의 간격 설정 */
+            }
 
       .iconChat {
         position: relative;
@@ -106,95 +106,81 @@
         font-size: 20px;
         font-weight: 600;
 
-        background: #ffffff;
-        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-        border-radius: 20px;
-      }
-    </style>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-  </head>
-  <body>
-    <div class="top-right">
-      <div class="notification">
-        <a>
-          <img
-            src="{{ url_for('static', filename='img/iconMessage.png') }}"
-            alt="message"
-          />
-          <div class="badge">1</div>
-        </a>
-      </div>
-      <div class="iconChat">
-        <a>
-          <img
-            src="{{ url_for('static', filename='img/iconChat.png') }}"
-            alt="chat"
-          />
-        </a>
-      </div>
-    </div>
-    <div class="container">
-      <h1>{{title}}</h1>
-      <img
-        src="{{ url_for('static', filename='img/mascot.png') }}"
-        alt="Mascot"
-        class="maskote"
-      />
-      <input
-        type="text"
-        class="input-box"
-        id="message-input"
-        placeholder="전달하고 싶은 메세지를 입력하세요"
-      />
-      <button id="submitButton">선택하기</button>
-    </div>
-    <script>
-      const submitButton = document.getElementById("submitButton");
-      const messageInput = document.getElementById("message-input");
-      submitButton.addEventListener("click", function (e) {
-        e.preventDefault();
-        const userId = localStorage.getItem("token");
-        const userMessage = messageInput.value;
-        console.log("서버에 전송한 데이터 유저 이름 질문", userId, userMessage);
-        postUserQuestion(userId, userMessage);
-      });
+                background: #ffffff;
+                box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+                border-radius: 20px;
+            }
+        </style>
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    </head>
+    <body>
+        <div class="top-right">
+            <div class="notification">
+                <a>
+                    <img src="{{ url_for('static', filename='img/iconMessage.png') }}" alt="message" />
+                    <div class="badge">1</div>
+                </a>
+            </div>
+            <div class="iconChat">
+                <a>
+                    <img src="{{ url_for('static', filename='img/iconChat.png') }}" alt="chat" />
+                </a>
+            </div>
+        </div>
+        <div class="container">
+            <h1>{{title}}</h1>
+            <img src="{{ url_for('static', filename='img/mascot.png') }}" alt="Mascot" class="maskote" />
+            <input type="text" class="input-box" id="message-input" placeholder="전달하고 싶은 메세지를 입력하세요" />
+            <button id="submitButton">보내기</button>
+        </div>
+        <script>
+            const submitButton = document.getElementById('submitButton');
+            const messageInput = document.getElementById('message-input');
+            submitButton.addEventListener('click', function (e) {
+                e.preventDefault();
+                const userId = localStorage.getItem('token');
+                const userMessage = messageInput.value;
+                console.log('서버에 전송한 데이터 유저 이름 질문', userId, userMessage);
+                postUserQuestion(userId, userMessage);
+            });
 
-      const postUserQuestion = async (userId, userMessage) => {
-        try {
-          const response = await fetch("/question/send", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ u_id: userId, msg: userMessage }),
-          });
-        } catch (e) {
-          alert(e);
-        }
-      };
-      const messageIcon = document.querySelector(".notification");
-      const iconChat = document.querySelector(".iconChat");
-      messageIcon.addEventListener("click", (e) => {
-        e.preventDefault();
-        const token = localStorage.getItem("token");
-        console.log(token);
-        $.ajax({
-          type: "POST",
-          url: `/receive`,
-          data: JSON.stringify({
-            token,
-          }),
-          contentType: "application/json",
-          success: function (response) {
-            console.log(response);
-            window.location.href = "/inbox";
-          },
-          error: function (e) {
-            alert("Error: " + e.responseText);
-          },
-        });
-        window.location.href = "/inbox";
-      });
+            const postUserQuestion = async (userId, userMessage) => {
+                try {
+                    const response = await fetch('/question', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ u_id: userId, msg: userMessage }),
+                    });
+                } catch (e) {
+                    alert(e);
+                }
+            };
+
+            const messageIcon = document.querySelector('.notification');
+            const iconChat = document.querySelector('.iconChat');
+            messageIcon.addEventListener('click', (e) => {
+                e.preventDefault();
+                const token = localStorage.getItem('token');
+                console.log(token);
+                $.ajax({
+                    type: 'POST',
+                    url: `/receive`,
+                    data: JSON.stringify({
+                        token,
+                    }),
+                    contentType: 'application/json',
+                    success: function (response) {
+                        console.log(response);
+                        window.location.href = '/inbox';
+                    },
+                    error: function (e) {
+                        alert('Error: ' + e.responseText);
+                        window.location.reload();
+                    },
+                });
+            });
 
       iconChat.addEventListener("click", (e) => {
         e.preventDefault();

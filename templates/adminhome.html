@@ -61,7 +61,7 @@
                 top: 1px;
                 left: 20px;
                 right: 20px;
-                bottom: 10px;
+                bottom: 1px;
                 background-color: white;
                 box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
                 padding: 4px;
@@ -100,10 +100,27 @@
                 transform: translateX(-50%);
                 text-align: center;
                 z-index: 1;
+                display: flex;
+                justify-content: center;
+                align-items: center;
             }
 
             .btn-container button {
                 margin: 5px;
+                text-wrap: nowrap;
+                border: 0;
+                font-size: 3vh;
+                padding: 15px 20px;
+                border-radius: 10px;
+                color: white;
+            }
+
+            .accept-btn {
+                background-color: green;
+            }
+
+            .reject-btn {
+                background-color: red;
             }
         </style>
     </head>
@@ -143,6 +160,7 @@
             ];
 
             window.addEventListener('load', function () {
+                const sortedList = lists.sort((a, b) => b.admin - a.admin);
                 for (let i = 0; i < lists.length; i++) {
                     let list = lists[i];
                     let content = list['content'];
@@ -169,16 +187,14 @@
                     }
                 }
 
-                // Event listener for accept button
                 $(document).on('click', '.accept-btn', function () {
                     let messageId = $(this).data('id');
-                    acceptUserMessage(messageId, 'accepted');
+                    acceptUserMessage(messageId, true);
                 });
 
-                // Event listener for reject button
                 $(document).on('click', '.reject-btn', function () {
                     let messageId = $(this).data('id');
-                    acceptUserMessage(messageId, 'rejected');
+                    acceptUserMessage(messageId, false);
                 });
 
                 function acceptUserMessage(id, content) {
@@ -192,15 +208,15 @@
                         },
                         error: function (e) {
                             console.error('Error:', e);
-                            window.location.reload();
                         },
                     });
+                    console.log('click', id, content);
                 }
             });
         </script>
         <div class="container">
             <div class="header">
-                <h2>받은 편지함</h2>
+                <h2>편지 리스트</h2>
             </div>
             <div class="grid-container" id="message-box"></div>
         </div>
