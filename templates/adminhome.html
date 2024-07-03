@@ -125,68 +125,32 @@
         </style>
     </head>
     <body>
+        <div class="container">
+            <div class="header">
+                <h2>편지 리스트</h2>
+            </div>
+            <div class="grid-container" id="message-box">
+                {% for message in userMessageList %}
+                <div class="grid-item">
+                    {% if not message['admin'] %}
+                    <div class="letter-container letter-container-unread" id="letterOutput{{ message['id'] }}">
+                        <div class="letter">{{ message['content'] }}</div>
+                    </div>
+                    <div class="btn-container">
+                        <button class="accept-btn" data-id="{{ message['id'] }}">승인</button>
+                        <button class="reject-btn" data-id="{{ message['id'] }}">거절</button>
+                    </div>
+                    {% else %}
+                    <div class="letter-container letter-container-read" id="letterOutput{{ message['id'] }}">
+                        <div class="letter">{{ message['content'] }}</div>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
         <script>
-            let lists = [
-                {
-                    id: 1,
-                    content: '안녕하세요, 첫 번째 편지입니다.',
-                    userRead: false,
-                    admin: false,
-                },
-                {
-                    id: 2,
-                    content: '두 번째 편지입니다. 새로운 소식이 있습니다.',
-                    userRead: true,
-                    admin: false,
-                },
-                {
-                    id: 3,
-                    content: '관리자가 보낸 중요한 알림입니다.',
-                    userRead: false,
-                    admin: true,
-                },
-                {
-                    id: 4,
-                    content: '네 번째 편지입니다. 오늘 날씨가 참 좋네요.',
-                    userRead: true,
-                    admin: true,
-                },
-                {
-                    id: 5,
-                    content: '다섯 번째 편지입니다. 주말 잘 보내세요.',
-                    userRead: false,
-                    admin: false,
-                },
-            ];
-
             window.addEventListener('load', function () {
-                const sortedList = lists.sort((a, b) => b.admin - a.admin);
-                for (let i = 0; i < lists.length; i++) {
-                    let list = lists[i];
-                    let content = list['content'];
-                    let admin = list['admin'];
-                    let id = list['id'];
-
-                    let tempHtml = `<div class="grid-item" data-letter-id="${id}">
-                        <img src="{{ url_for('static', filename='img/closeMessageImg.png') }}" alt="Letter Image" class="image">
-                        <div class="letter-container-read" id="letterOutput${id}">
-                            <div class="letter">${content}</div>
-                        </div>
-                    </div>`;
-
-                    $('#message-box').append(tempHtml);
-
-                    if (admin) {
-                        console.log('jhi');
-                        console.log('$(`.grid-item[data-letter-id="${id}"]`)', $(`.grid-item[data-letter-id="${id}"]`));
-                        let buttonHtml = `<div class="btn-container">
-                              <button class="accept-btn" data-id="${id}">승인</button>
-                              <button class="reject-btn" data-id="${id}">거절</button>
-                            </div>`;
-                        $(`.grid-item[data-letter-id="${id}"]`).append(buttonHtml);
-                    }
-                }
-
                 $(document).on('click', '.accept-btn', function () {
                     let messageId = $(this).data('id');
                     acceptUserMessage(messageId, true);
@@ -200,8 +164,8 @@
                 function acceptUserMessage(id, content) {
                     $.ajax({
                         type: 'POST',
-                        url: '/adminMsg/check',
-                        data: { m_id: id, status: content },
+                        contentType: 'application/json',
+                        data: JSON.stringify({ m_id: id, status: content }),
                         success: function (response) {
                             console.log(response);
                             window.location.reload();
@@ -214,11 +178,5 @@
                 }
             });
         </script>
-        <div class="container">
-            <div class="header">
-                <h2>편지 리스트</h2>
-            </div>
-            <div class="grid-container" id="message-box"></div>
-        </div>
     </body>
 </html>

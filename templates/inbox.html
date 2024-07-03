@@ -74,7 +74,7 @@
                 top: 1px;
                 left: 20px;
                 right: 20px;
-                bottom: 10px;
+                bottom: 1px;
                 z-index: 0;
                 background-color: white;
                 box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -111,32 +111,6 @@
     <body>
         <script>
             window.addEventListener('load', function () {
-                const sortedList = lists.sort((a, b) => b.userRead - a.userRead);
-                for (let i = 0; i < lists.length; i++) {
-                    let list = lists[i];
-                    let content = list['content'];
-                    let userRead = list['userRead'];
-                    let id = list['id'];
-                    console.log(id);
-
-                    if (userRead == false) {
-                        let tempHtml = `<div class="grid-item">
-                                            <img src="{{ url_for('static', filename='img/closeMessageImg.png') }}" alt="Letter Image" class="image" data-letter-id="${id}">
-                                            <div class="letter-container-unread" id="letterOutput${id}">
-                                                <div class="letter" >${content}</div>
-                                            </div>
-                                        </div>`;
-                        $('#message-box').append(tempHtml);
-                    } else {
-                        let tempHtml = `<div class="grid-item">
-                                            <div class="letter-container-read" id="letterOutput${id}">
-                                                <div class="letter" >${content}</div>
-                                            </div>
-                                        </div>`;
-                        $('#message-box').append(tempHtml);
-                    }
-                }
-
                 $(document).on('click', '.image', function () {
                     const letterContainer = $(this).data('letter-id');
                     $(`#letterOutput${letterContainer}`).toggle();
@@ -165,7 +139,27 @@
             <div class="header">
                 <h2>받은 편지함</h2>
             </div>
-            <div class="grid-container" id="message-box"></div>
+            <div class="grid-container" id="message-box">
+                {% for message in messagelist %}
+                <div class="grid-item">
+                    {% if not message['userRead'] %}
+                    <img
+                        src="{{ url_for('static', filename='img/closeMessageImg.png') }}"
+                        alt="Letter Image"
+                        class="image"
+                        data-letter-id="{{ message['id'] }}"
+                    />
+                    <div class="letter-container letter-container-unread" id="letterOutput{{ message['id'] }}">
+                        <div class="letter">{{ message['content'] }}</div>
+                    </div>
+                    {% else %}
+                    <div class="letter-container letter-container-read" id="letterOutput{{ message['id'] }}">
+                        <div class="letter">{{ message['content'] }}</div>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
         </div>
     </body>
 </html>

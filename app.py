@@ -230,39 +230,40 @@ def test():
 
 @app.route('/inbox')
 def inbox():
-    # messagelist = [
-    #     {
-    #         id: 1,
-    #         content: '안녕하세요, 첫 번째 편지입니다.',
-    #         userRead: false,
-    #         admin: false,
-    #     },
-    #     {
-    #         id: 2,
-    #         content: '두 번째 편지입니다. 새로운 소식이 있습니다.',
-    #         userRead: true,
-    #         admin: false,
-    #     },
-    #     {
-    #         id: 3,
-    #         content: '관리자가 보낸 중요한 알림입니다.',
-    #         userRead: false,
-    #         admin: true,
-    #     },
-    #     {
-    #         id: 4,
-    #         content: '네 번째 편지입니다. 오늘 날씨가 참 좋네요.',
-    #         userRead: true,
-    #         admin: false,
-    #     },
-    #     {
-    #         id: 5,
-    #         content: '다섯 번째 편지입니다. 주말 잘 보내세요.',
-    #         userRead: false,
-    #         admin: false,
-    #     },
-    # ],
-    return render_template('inbox.html')
+    messagelist = [
+        {
+            'id': 1,
+            'content': '안녕하세요, 첫 번째 편지입니다.',
+            'userRead': False,
+            'admin': False,
+        },
+        {
+            'id': 2,
+            'content': '두 번째 편지입니다. 새로운 소식이 있습니다.',
+            'userRead': True,
+            'admin': False,
+        },
+        {
+            'id': 3,
+            'content': '관리자가 보낸 중요한 알림입니다.',
+            'userRead': False,
+            'admin': True,
+        },
+        {
+            'id': 4,
+            'content': '네 번째 편지입니다. 오늘 날씨가 참 좋네요.',
+            'userRead': True,
+            'admin': False,
+        },
+        {
+            'id': 5,
+            'content': '다섯 번째 편지입니다. 주말 잘 보내세요.',
+            'userRead': False,
+            'admin': False,
+        },
+    ]
+    return render_template('inbox.html', messagelist=messagelist)
+
 
 @app.route('/chat')
 def chatpage():
@@ -270,7 +271,39 @@ def chatpage():
 
 @app.route('/adminhome')
 def adminhome():
-    return render_template('adminhome.html')
+    userMessageList = [
+        {
+            'id': 1,
+            'content': '안녕하세요, 첫 번째 편지입니다.',
+            'userRead': False,
+            'admin': False,
+        },
+        {
+            'id': 2,
+            'content': '두 번째 편지입니다. 새로운 소식이 있습니다.',
+            'userRead': True,
+            'admin': False,
+        },
+        {
+            'id': 3,
+            'content': '관리자가 보낸 중요한 알림입니다.',
+            'userRead': False,
+            'admin': True,
+        },
+        {
+            'id': 4,
+            'content': '네 번째 편지입니다. 오늘 날씨가 참 좋네요.',
+            'userRead': True,
+            'admin': False,
+        },
+        {
+            'id': 5,
+            'content': '다섯 번째 편지입니다. 주말 잘 보내세요.',
+            'userRead': False,
+            'admin': False,
+        },
+    ]
+    return render_template('adminhome.html',userMessageList=userMessageList)
 
 @app.route('/test2')
 def test2():
