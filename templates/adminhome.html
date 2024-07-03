@@ -44,19 +44,6 @@
                 position: relative;
             }
 
-            .letter-container-unread {
-                position: absolute;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                z-index: 1;
-                display: none;
-            }
-
             .letter-container-read {
                 position: absolute;
                 top: 0;
@@ -75,7 +62,6 @@
                 left: 20px;
                 right: 20px;
                 bottom: 10px;
-                z-index: 0;
                 background-color: white;
                 box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
                 padding: 4px;
@@ -106,6 +92,19 @@
                 box-shadow: 5px 5px 5px 5px rgb(200, 200, 200);
                 border-radius: 100px;
             }
+
+            .btn-container {
+                position: absolute;
+                bottom: 10px;
+                left: 50%;
+                transform: translateX(-50%);
+                text-align: center;
+                z-index: 1;
+            }
+
+            .btn-container button {
+                margin: 5px;
+            }
         </style>
     </head>
     <body>
@@ -133,7 +132,7 @@
                     id: 4,
                     content: '네 번째 편지입니다. 오늘 날씨가 참 좋네요.',
                     userRead: true,
-                    admin: false,
+                    admin: true,
                 },
                 {
                     id: 5,
@@ -147,44 +146,53 @@
                 for (let i = 0; i < lists.length; i++) {
                     let list = lists[i];
                     let content = list['content'];
-                    let admin = list['admin']
-                    let userRead = list['userRead'];
+                    let admin = list['admin'];
                     let id = list['id'];
-                    console.log(id);
-                        let tempHtml = `<div class="grid-item">
-                                            <img src="{{ url_for('static', filename='img/closeMessageImg.png') }}" alt="Letter Image" class="image" data-letter-id="${id}">
-                                            <div class="letter-container-unread" id="letterOutput${id}">
-                                                <div class="letter" >${content}</div>
-                                            </div>
-                                        </div>`;
-                        $('#message-box').append(tempHtml);
-                    if (admin == false) {
-                        let tempHtml = `<div class="grid-item">
-                                            <div class="letter-container-read" id="letterOutput${id}">
-                                                <div class="letter" >${content}</div>
-                                            </div>
-                                        </div>`;
-                        $('#grid-item').append(tempHtml);
+
+                    let tempHtml = `<div class="grid-item" data-letter-id="${id}">
+                        <img src="{{ url_for('static', filename='img/closeMessageImg.png') }}" alt="Letter Image" class="image">
+                        <div class="letter-container-read" id="letterOutput${id}">
+                            <div class="letter">${content}</div>
+                        </div>
+                    </div>`;
+
+                    $('#message-box').append(tempHtml);
+
+                    if (admin) {
+                        console.log('jhi');
+                        console.log('$(`.grid-item[data-letter-id="${id}"]`)', $(`.grid-item[data-letter-id="${id}"]`));
+                        let buttonHtml = `<div class="btn-container">
+                              <button class="accept-btn" data-id="${id}">승인</button>
+                              <button class="reject-btn" data-id="${id}">거절</button>
+                            </div>`;
+                        $(`.grid-item[data-letter-id="${id}"]`).append(buttonHtml);
                     }
                 }
 
-                $(document).on('click', '.image', function () {
-                    const letterContainer = $(this).data('letter-id');
-                    $(`#letterOutput${letterContainer}`).toggle();
-                    const token = localStorage.getItem('token');
-                    postUserReadMessageId(letterContainer);
+                // Event listener for accept button
+                $(document).on('click', '.accept-btn', function () {
+                    let messageId = $(this).data('id');
+                    acceptUserMessage(messageId, 'accepted');
                 });
 
-                function postUserReadMessageId(id) {
+                // Event listener for reject button
+                $(document).on('click', '.reject-btn', function () {
+                    let messageId = $(this).data('id');
+                    acceptUserMessage(messageId, 'rejected');
+                });
+
+                function acceptUserMessage(id, content) {
                     $.ajax({
                         type: 'POST',
-                        url: '/receive/msgRead',
-                        data: { msg_id: id },
+                        url: '/adminMsg/check',
+                        data: { m_id: id, status: content },
                         success: function (response) {
                             console.log(response);
+                            window.location.reload();
                         },
-                        error(e) {
-                            alert(e);
+                        error: function (e) {
+                            console.error('Error:', e);
+                            window.location.reload();
                         },
                     });
                 }

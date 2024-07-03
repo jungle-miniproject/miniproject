@@ -140,7 +140,7 @@
                 e.preventDefault();
                 const userId = localStorage.getItem('token');
                 const userMessage = messageInput.value;
-                console.log('서버에 전송한 데이터 유저 이름 질문',userId,userMessage);
+                console.log('서버에 전송한 데이터 유저 이름 질문', userId, userMessage);
                 postUserQuestion(userId, userMessage);
             });
 
@@ -159,34 +159,26 @@
             };
             const messageIcon = document.querySelector('.notification');
             const iconChat = document.querySelector('.iconChat');
-
-            submitButton.addEventListener('click', function () {
-                const userName = messageInput.value;
-                localStorage.setItem('inputedUsername', userName);
-                console.log(userName);
-                window.location.href = '/homepage';
-            });
-
             messageIcon.addEventListener('click', (e) => {
                 e.preventDefault();
                 const token = localStorage.getItem('token');
                 console.log(token);
-                // $.ajax({
-                //     type: 'POST',
-                //     url: `/receive`,
-                //     data: JSON.stringify({
-                //         token: token,
-                //     }),
-                //     contentType: 'application/json',
-                //     success: function (response) {
-                //         console.log(response);
-                //         window.location.href = '/inbox';
-                //     },
-                //     error: function (e) {
-                //         alert('Error: ' + e.responseText);
-                //     },
-                // });
-                // window.location.href = '/inbox';
+                $.ajax({
+                    type: 'POST',
+                    url: `/receive`,
+                    data: JSON.stringify({
+                        token,
+                    }),
+                    contentType: 'application/json',
+                    success: function (response) {
+                        console.log(response);
+                        window.location.href = '/inbox';
+                    },
+                    error: function (e) {
+                        alert('Error: ' + e.responseText);
+                    },
+                });
+                window.location.href = '/inbox';
             });
 
             iconChat.addEventListener('click', (e) => {
