@@ -23,6 +23,7 @@ const postLogin = async () => {
     },
     body: JSON.stringify({ id: userId, pwd: userPwd }),
   });
+  console.log(response);
   if (response.ok) {
     let token = response["token"];
     console.log(token);

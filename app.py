@@ -49,6 +49,15 @@ def protected():
     current_user = get_jwt_identity()
     return jsonify(logged_in_as=current_user), 200
 
+#로그인 성공시 hompage창
+@app.route("/test_home")
+def testHome():
+    user_list=list(db.users.find({}))
+    print("이게뭐람",user_list)
+   #  return jsonify({'data':user_list})
+    return jsonify({'data':'success'})
+
+
 #가입창 클릭시 가입화면전환
 @app.route("/signup", methods=["POST"])
 def register():
@@ -77,8 +86,9 @@ def api_register():
 #질문 폼 api
 @app.route("/question",methods=["POST"])
 def question():
+    print("질문 폼 요청값:",request.json)
     #입력받은 폼 파싱
-    u_id    = request.json['s_id']
+    u_id    = request.json['u_id']
     msg     = request.json['msg']
 
     now_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -144,7 +154,7 @@ def home_page():
     return render_template('home.html')
 
 @app.route('/question')
-def question_page():
+def question():
     return render_template('question.html')
 
 @app.route('/test')
