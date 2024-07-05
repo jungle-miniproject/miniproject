@@ -131,6 +131,19 @@
                 font-size: 7vh;
                 font-weight: 800;
             }
+            #outBtn {
+                width: 80px;
+                height: 40px;
+                border: 0px;
+                color: red;
+                border-radius: 10px;
+                font-size: 16px;
+                font-weight: 700;
+                background-color: white  ;
+                position: relative;
+                bottom: 55px;
+                right: 120px;
+            }
         </style>
     </head>
     <body>
@@ -138,6 +151,7 @@
             <div class="header">
                 <h2>편지 리스트</h2>
             </div>
+            <button id="outBtn">logout</button>
             <div class="grid-container" id="message-box">
                 {% for message in userMessageList %}
                 <div class="grid-item">
@@ -188,6 +202,11 @@
                     });
                     console.log('click', id, content);
                 }
+            });
+
+            const outBtn = document.getElementById('outBtn');
+            outBtn.addEventListener('click', function () {
+                window.location.href = '/';
             });
         </script>
         <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>

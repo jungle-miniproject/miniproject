@@ -1,0 +1,116 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: relative;
+}
+.container {
+    text-align: center;
+}
+h1 {
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+.main-image {
+    max-width: 40%;
+    height: auto;
+}
+#input-box {
+    margin: 20px 0;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 300px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    height: 50px; /* 높이 조정 */
+    line-height: 30px; /* 텍스트 중앙 정렬 */
+    font-size: 16px; /* 폰트 크기 조정 */
+}
+.button {
+    padding: 10px 20px;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+.button:hover {
+    background-color: #444;
+}
+.top-right {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    gap: 20px; /* 이미지 사이의 간격 설정 */
+}
+
+.iconChat {
+    position: relative;
+    margin-top: 6px;
+}
+
+.iconChat img {
+    width: 50px; /* 이미지 크기 조정 */
+    cursor: pointer;
+}
+.notification {
+    position: relative;
+}
+.notification img {
+    width: 50px; /* 이미지 크기 조정 */
+    cursor: pointer;
+}
+.notification .badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+}
+
+#input-box {
+    width: 423px;
+    min-height: 57px;
+    background: #ffffff;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;
+}
+
+#submitButton {
+    width: 228px;
+    height: 62px;
+    border: 0;
+    font-size: 20px;
+    font-weight: 600;
+
+    background: #ffffff;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;
+}
+#outBtn {
+    width: 80px;
+    height: 40px;
+    background-color: salmon;
+    border: 0px;
+    color: white;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 700;
+}

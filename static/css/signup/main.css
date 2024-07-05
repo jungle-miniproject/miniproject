@@ -90,3 +90,8 @@ input {
     width: 100%;
     text-align: left;
 }
+
+.error {
+    color: red;
+    font-size: 0.8em;
+}

@@ -4,130 +4,23 @@
         <meta charset="UTF-8" />
         <title>Chat Room</title>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.2/socket.io.min.js"></script>
-        <style>
-            * {
-                box-sizing: border-box;
-            }
-            body {
-                min-height: 100vh;
-                margin: 0;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                background-color: rgb(209, 209, 209);
-            }
-
-            #wrapper {
-                background-color: white;
-                background-image: url('../static/img/mascot.png');
-                background-repeat: no-repeat;
-                background-size: cover;
-                width: 360px;
-                height: 700px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                flex-direction: column;
-                border-radius: 40px;
-                padding: 10px;
-            }
-            #messages {
-                width: 100%;
-                height: 100%;
-                display: flex;
-                flex-direction: column;
-                border-radius: 10px;
-                padding: 40px;
-                background-color: white;
-                overflow-y: scroll;
-                background-color: rgba(203, 203, 203, 0.1);
-                padding: 10px;
-            }
-            .chatMessageWrapper {
-                display: flex;
-                margin: 5px 0;
-                width: 100%;
-            }
-            .inputLabel {
-                border-radius: 10px;
-                display: inline-block;
-                padding: 10px 15px;
-                max-width: 60%;
-                word-wrap: break-word;
-                box-shadow: 3px 3px 0 rgb(192, 192, 192);
-                min-width: 50px;
-                color: white;
-                font-weight: 600;
-            }
-            .other {
-                background-color: #c1c1c1;
-                align-self: flex-start;
-                border-radius: 1px 20px 20px 20px;
-            }
-            .my {
-                background-color: lightcoral;
-                align-self: flex-end;
-                border-radius: 20px 1px 20px 20px;
-            }
-            .myname {
-                align-self: flex-end;
-                margin: 0;
-                font-weight: 900;
-                position: relative;
-                top: 10px;
-                color: black;
-            }
-            .othername {
-                align-self: flex-start;
-                margin: 0;
-                font-weight: 900;
-                position: relative;
-                top: 10px;
-                color: black;
-            }
-
-            button {
-                border: 0;
-                padding: 10px;
-                background-color: rgb(255, 91, 91);
-                color: white;
-                font-weight: 700;
-                font-size: 20px;
-                margin-left: 10px;
-                cursor: pointer;
-                border-radius: 5px;
-            }
-            #btnContainer {
-                width: 80%;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                margin: 10px;
-            }
-            #btnBox input {
-                width: 70%;
-                padding: 13px;
-                border: 1px solid #ccc;
-                border-radius: 5px;
-                background-color: rgb(218, 218, 218);
-            }
-            #btnBox {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                width: 100%;
-            }
-
-            #title {
-                margin: 2px;
-                font-size: 40px;
-            }
-        </style>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/chat/main.css') }}" />
     </head>
     <body>
-        <h1 id="title">자유롭게 이야기해요!</h1>
+        <button id="outBtn">홈으로</button>
+        <div class="left-container">
+            <div>다른 사람들과 즐겁게 이야기 해보세요!</div>
+            <div class="mascote-container">
+                <div class="msg">다 보고있다! 나쁜말 하면 혼나!</div>
+                <img src="/static/img/mascot.png" alt="" decoding="async" loading="lazy" class="gard" />
+            </div>
+        </div>
         <div id="wrapper">
+            <div id="phone-header">
+                <div></div>
+                <div></div>
+            </div>
+            <img src="/static/img/mascot.png" alt="" decoding="async" loading="lazy" />
             <div id="messages"></div>
             <div id="btnContainer">
                 <div id="btnBox">
@@ -136,7 +29,6 @@
                 </div>
             </div>
         </div>
-
         <script src="{{ url_for('static', filename='js/chat/index.js') }}"></script>
     </body>
 </html>

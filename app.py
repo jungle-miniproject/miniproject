@@ -8,10 +8,8 @@ from pymongo import MongoClient
 from flask_socketio import SocketIO
 from flask_socketio import SocketIO, send
 
-#pymongo 변수 선언
-client = MongoClient('mongodb://test:test@3.35.140.49',27017)
+client = MongoClient('localhost', 27017)
 db = client.w00_jungdaejun
-
 app = Flask(__name__)
 socket_io = SocketIO(app)
 
@@ -27,7 +25,7 @@ def login():
     username = request.json['id'] # request.form에서 아이디와 패스워드 파싱
     password = request.json['pwd']
     
-    print(request)
+    print(request,username,password)
 
     user_id = db.users.find_one({'id':username})
     if user_id == None:
@@ -57,8 +55,9 @@ def authChk():
         authority=db.users.find_one({'id':identity},{'_id':0,'password':0,'name':0})
         print("autaut",authority)
         print("authauth",authority['admin'])
+        print('identity',identity,authority)
         if authority['admin'] == True :
-            messages = list(db.messages.find({}))
+            messages = list(db.messages.find({}))[::-1]
             print(messages)
             return render_template('adminhome.html',userMessageList=messages)
         messages = list(db.users.find({}))
@@ -117,8 +116,7 @@ def recevedMsg():
     try:
         decoded_token = decode_token(token)
         u_id = decoded_token['sub']
-        messages=objectIdDecoder(list(db.messages.find({'id':u_id})))
-        print('message:',messages)
+        messages=objectIdDecoder(list(db.messages.find({'id':u_id})))[::-1]
       #   return jsonify({'redirect':'/inboxRedirect'})
         return render_template('inbox.html',messagelist=messages)
 
@@ -200,6 +198,10 @@ def question():
 @app.route('/inboxRedirect')
 def inboxRedirect():
     return render_template('inbox.html')
+
+@app.route('/home')
+def homepage():
+    return render_template('home.html')
 
 #리다이렉션 테스트 용으로 사용중
 @app.route('/test')
