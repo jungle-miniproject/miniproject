@@ -1,5 +1,5 @@
-# miniproject
-# 정글 6기 친해지기 기원 1일차 서비스 정대전(정글 대신 전해드립니다)
+# 정대전
+## 정글 6기 친해지기 기원 1일차 서비스 정대전(정글 대신 전해드립니다)
 ## 서비스 소개글
 <p align='center'>
   <img width="400" alt="스크린샷 2024-06-05 오후 3 53 28" src="https://github.com/jungle-miniproject/miniproject/assets/133184988/a2fcceb3-2631-41b2-aec5-a9ab17e137c8">
