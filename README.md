@@ -42,4 +42,6 @@ Frontend
 | **Frontend** | **Backend** | **Frontend** |
 | :------: |  :------: | :------: | 
 | **박건우** | **조형욱** | **김태민** |
-|[<img src="https://avatars.githubusercontent.com/u/133184988?v=4" height=150 width=150> <br/> @pigpgw](https://github.com/pigpgw) |  [<img src="https://github.com/orgs/jungle-miniproject/people/HyoungUkJo?v=4" height=150 width=150> <br/> @HyoungUkJo](https://github.com/HyoungUkJo)  | [<img src="https://github.com/orgs/jungle-miniproject/people/HyoungUkJo?v=4?v=4?v=4" height=150 width=150> <br/> @kopuso](https://github.com/kopuso) |
+|[<img src="https://avatars.githubusercontent.com/u/133184988?v=4" height=150 width=150> <br/> @pigpgw](https://github.com/pigpgw) |  [<img src="https://github.com/orgs/jungle-miniproject/people/HyoungUkJo?v=4" height=150 width=150> <br/> @HyoungUkJo](https://github.com/HyoungUkJo)  | [<img src="https://avatars.githubusercontent.com/u/139246353?s=400&u=d4915bf683d7ad169d6ad8d1c0cc0d540a152595&v=4" height=150 width=150> <br/> @kopuso](https://github.com/kopuso) |
+
+
