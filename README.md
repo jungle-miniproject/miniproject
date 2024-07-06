@@ -17,7 +17,7 @@
 ## 프로젝트의 주요 목적
  정대전은 내향적인 사람들이 많은 6기 분들이 누군가와 더 친해지고 싶을때, 아니면 조금 다가가고 싶을때 편지를 배달해주는 전서구 역할을 해주는 서비스입니다.
 ## 프로젝트 기간
-- 2024. 07. 01. ~  2024. 07. 04.
+2024 07 01 ~  2024 07 04
 ## 프로젝트의 주요 기능
 - 로그인, 회원가입
 - 관리자 승인, 거절
@@ -35,8 +35,6 @@ https://github.com/jungle-miniproject/miniproject/assets/133184988/47314cfe-aa7c
 
 ### 실시간 익명 랜덤 채팅
 ![채팅](https://github.com/jungle-miniproject/miniproject/assets/133184988/7573e3a2-fc15-4776-b3b8-be48dafa8bf2)
-
-
 
 Frontend
 ## 팀원 소개 
